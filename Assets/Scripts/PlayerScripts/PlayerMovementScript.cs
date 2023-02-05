@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class PlayerMovementScript : MonoBehaviour
 {
-    [SerializeField]
     private Transform cameraTransform;
     private float moveSpeed = 5f;
     private CharacterController characterController;
