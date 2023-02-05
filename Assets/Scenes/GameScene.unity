@@ -339,7 +339,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3797330456676834619, guid: cbe40ac541acde449a3a3d67ae49165a, type: 3}
       propertyPath: m_ScreenX
-      value: 0.18
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 3797330456676834619, guid: cbe40ac541acde449a3a3d67ae49165a, type: 3}
       propertyPath: m_ScreenY
@@ -403,7 +403,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3797330456865072277, guid: cbe40ac541acde449a3a3d67ae49165a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 32.58721
+      value: 32.37501
       objectReference: {fileID: 0}
     - target: {fileID: 3797330456865072277, guid: cbe40ac541acde449a3a3d67ae49165a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -625,7 +625,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.32326594, y: 0, z: 0, w: 0.94630814}
-  m_LocalPosition: {x: 32.61477, y: 2.748147, z: 26.073805}
+  m_LocalPosition: {x: 32.021343, y: 4.191579, z: 24.45175}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -839,15 +839,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4289462285244166223, guid: 326cb077ca7ecfe489799227c80ef267, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 32.61477
+      value: 32.021343
       objectReference: {fileID: 0}
     - target: {fileID: 4289462285244166223, guid: 326cb077ca7ecfe489799227c80ef267, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.748147
+      value: 4.191579
       objectReference: {fileID: 0}
     - target: {fileID: 4289462285244166223, guid: 326cb077ca7ecfe489799227c80ef267, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 26.073805
+      value: 24.45175
       objectReference: {fileID: 0}
     - target: {fileID: 4289462285244166223, guid: 326cb077ca7ecfe489799227c80ef267, type: 3}
       propertyPath: m_LocalRotation.w
@@ -883,15 +883,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4289462285449136609, guid: 326cb077ca7ecfe489799227c80ef267, type: 3}
       propertyPath: m_BiasY
-      value: -0.000000031183124
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4289462285449136609, guid: 326cb077ca7ecfe489799227c80ef267, type: 3}
       propertyPath: m_ScreenX
-      value: 0.25
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4289462285449136609, guid: 326cb077ca7ecfe489799227c80ef267, type: 3}
       propertyPath: m_ScreenY
-      value: 0.17
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 4289462285449136609, guid: 326cb077ca7ecfe489799227c80ef267, type: 3}
       propertyPath: m_XDamping
@@ -911,7 +911,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4289462285449136609, guid: 326cb077ca7ecfe489799227c80ef267, type: 3}
       propertyPath: m_CameraDistance
-      value: 1.8338397
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4289462285449136609, guid: 326cb077ca7ecfe489799227c80ef267, type: 3}
       propertyPath: m_TrackedObjectOffset.x
