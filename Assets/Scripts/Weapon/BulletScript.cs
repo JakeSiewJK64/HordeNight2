@@ -26,7 +26,6 @@ public class BulletScript : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         string tag = collision.gameObject.tag;
-        Debug.Log(tag);
         if (actions.ContainsKey(tag))
         {
             actions[tag](collision);
