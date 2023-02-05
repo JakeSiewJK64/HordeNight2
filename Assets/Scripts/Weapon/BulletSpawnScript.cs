@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class BulletSpawnScript : MonoBehaviour
 {
@@ -12,9 +13,9 @@ public class BulletSpawnScript : MonoBehaviour
 
     private Transform cameraTransform;
     private float lastBulletSpawn = 0f;
-    private float bulletLifetime = 5f;
-    private float bulletSpeed = 500f;
-    private float shootDelay = .2f;
+    private float bulletLifetime = 15f;
+    private float bulletSpeed = 200f;
+    private float shootDelay = .1f;
 
     private string shootSoundPath = "Sound\\WeaponSounds\\";
 
@@ -28,7 +29,8 @@ public class BulletSpawnScript : MonoBehaviour
     {
         if(Input.GetMouseButton(0) && Time.time - lastBulletSpawn > shootDelay)
         {
-            GameObject bulletInstance = Instantiate(bullet, bulletSpawn);
+            Vector3 spawnPos = cameraTransform.position + cameraTransform.forward * 5;
+            GameObject bulletInstance = Instantiate(bullet, spawnPos, Quaternion.identity);
             Rigidbody rb = bulletInstance.GetComponent<Rigidbody>();
             rb.AddForce(cameraTransform.forward * bulletSpeed, ForceMode.VelocityChange);
             audioSource.PlayOneShot(Resources.Load<AudioClip>(shootSoundPath + "handgun_shoot"));
