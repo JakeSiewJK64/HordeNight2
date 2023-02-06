@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class BulletSpawnScript : MonoBehaviour
 {
@@ -13,7 +12,7 @@ public class BulletSpawnScript : MonoBehaviour
 
     private Transform cameraTransform;
     private float lastBulletSpawn = 0f;
-    private float bulletLifetime = 15f;
+    private float bulletLifetime = 5f;
     private float bulletSpeed = 200f;
     private float shootDelay = .1f;
 
@@ -25,17 +24,25 @@ public class BulletSpawnScript : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
+    private GameObject SpawnBullet(GameObject bullet, Vector3 pos, Vector3 direction)
+    {
+        GameObject bulletInstance = Instantiate(bullet, pos, Quaternion.identity);
+        Rigidbody rb = bulletInstance.GetComponent<Rigidbody>();
+        rb.AddForce(direction * bulletSpeed, ForceMode.VelocityChange);        
+        Destroy(bulletInstance, bulletLifetime);
+        lastBulletSpawn = Time.time;
+        audioSource.PlayOneShot(Resources.Load<AudioClip>(shootSoundPath + "handgun_shoot"));
+        return bulletInstance;
+    }
+
     void Update()
     {
         if(Input.GetMouseButton(0) && Time.time - lastBulletSpawn > shootDelay)
         {
-            Vector3 spawnPos = cameraTransform.position + cameraTransform.forward * 5;
-            GameObject bulletInstance = Instantiate(bullet, spawnPos, Quaternion.identity);
-            Rigidbody rb = bulletInstance.GetComponent<Rigidbody>();
-            rb.AddForce(cameraTransform.forward * bulletSpeed, ForceMode.VelocityChange);
-            audioSource.PlayOneShot(Resources.Load<AudioClip>(shootSoundPath + "handgun_shoot"));
-            lastBulletSpawn = Time.time;
-            Destroy(bulletInstance, bulletLifetime);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Vector3 direction = (ray.origin + ray.direction * 100) - bulletSpawn.position;
+            GameObject bulletFromCamera = SpawnBullet(bullet, cameraTransform.position + cameraTransform.forward * 5, direction.normalized);
+            bulletFromCamera.GetComponent<MeshRenderer>().enabled = false;
         }
     }
 }

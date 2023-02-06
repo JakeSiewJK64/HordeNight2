@@ -28,6 +28,7 @@ public class BulletScript : MonoBehaviour
         string tag = collision.gameObject.tag;
         if (actions.ContainsKey(tag))
         {
+            Debug.Log(tag);
             actions[tag](collision);
         }
     }

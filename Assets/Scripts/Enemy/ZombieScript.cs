@@ -4,6 +4,7 @@ public class ZombieScript : MonoBehaviour
 {
     private GameObject player;
     private float followRadius = 1000f;
+    private bool attacking = false;
 
     private GameObject GetPlayer()
     {
@@ -15,7 +16,7 @@ public class ZombieScript : MonoBehaviour
         player = GetPlayer();
     }
 
-    private void Update()
+    private void MoveToPlayer()
     {
         float distanceFromTarget = Vector3.Distance(transform.position, player.transform.position);
         if (distanceFromTarget <= followRadius)
@@ -27,5 +28,14 @@ public class ZombieScript : MonoBehaviour
                 2f * Time.deltaTime);
             transform.LookAt(player.transform);
         }
+    }
+
+    private void Update()
+    {
+        MoveToPlayer();
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
     }
 }
