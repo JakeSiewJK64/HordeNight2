@@ -15,7 +15,6 @@ public class BulletSpawnScript : MonoBehaviour
     private float bulletLifetime = 5f;
     private float bulletSpeed = 200f;
     private float shootDelay = .1f;
-
     private string shootSoundPath = "Sound\\WeaponSounds\\";
 
     private void Start()

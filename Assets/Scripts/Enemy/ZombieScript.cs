@@ -4,7 +4,6 @@ public class ZombieScript : MonoBehaviour
 {
     private GameObject player;
     private float followRadius = 1000f;
-    private bool attacking = false;
 
     private GameObject GetPlayer()
     {

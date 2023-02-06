@@ -7,7 +7,10 @@ public class PlayerMovementScript : MonoBehaviour
     private CharacterController characterController;
     private Transform playerTransform;
     private float rotationSpeed = 5f;
+    private Vector3 playerVelocity;
+    private float gravityValue = -9.81f;
     private Animator animator;
+    private bool groundedPlayer = false;
 
     private void Start()
     {
@@ -31,6 +34,12 @@ public class PlayerMovementScript : MonoBehaviour
     {
         AnimatePlayer();
 
+        groundedPlayer = characterController.isGrounded;
+        if (groundedPlayer && playerVelocity.y < 0)
+        {
+            playerVelocity.y = 0f;
+        }
+
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
@@ -44,6 +53,7 @@ public class PlayerMovementScript : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(0, targetAngle, 0);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotation, rotationSpeed * Time.deltaTime);
 
-
+        playerVelocity.y += gravityValue * Time.deltaTime;
+        characterController.Move(playerVelocity * Time.deltaTime);
     }
 }
