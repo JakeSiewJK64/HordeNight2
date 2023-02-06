@@ -6,7 +6,7 @@ public class BulletSpawnScript : MonoBehaviour
     private Transform bulletSpawn;
 
     [SerializeField]
-    private GameObject bullet;
+    private GameObject bullet, bulletTrail;
 
     private AudioSource audioSource;
 
@@ -25,7 +25,10 @@ public class BulletSpawnScript : MonoBehaviour
 
     private GameObject SpawnBullet(GameObject bullet, Vector3 pos, Vector3 direction)
     {
-        GameObject bulletInstance = Instantiate(bullet, pos, Quaternion.identity);
+        Quaternion originalRotation = bullet.transform.rotation;
+        Quaternion rotationBy90 = Quaternion.Euler(0, 0, 90);
+
+        GameObject bulletInstance = Instantiate(bullet, pos, originalRotation * rotationBy90);
         Rigidbody rb = bulletInstance.GetComponent<Rigidbody>();
         rb.AddForce(direction * bulletSpeed, ForceMode.VelocityChange);        
         Destroy(bulletInstance, bulletLifetime);
@@ -42,6 +45,7 @@ public class BulletSpawnScript : MonoBehaviour
             Vector3 direction = (ray.origin + ray.direction * 100) - bulletSpawn.position;
             GameObject bulletFromCamera = SpawnBullet(bullet, cameraTransform.position + cameraTransform.forward * 5, direction.normalized);
             bulletFromCamera.GetComponent<MeshRenderer>().enabled = false;
+            SpawnBullet(bulletTrail, bulletSpawn.position + cameraTransform.forward * 5, direction.normalized);
         }
     }
 }

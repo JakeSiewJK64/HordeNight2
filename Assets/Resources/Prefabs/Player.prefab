@@ -2449,6 +2449,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletSpawn: {fileID: 5207078978381934665}
   bullet: {fileID: 8755925224214531881, guid: b0f71f8e2584b7a48a54ccf663ebb4e2, type: 3}
+  bulletTrail: {fileID: 282644192686669923, guid: 9497aa00c54787246b5af1b959728987, type: 3}
 --- !u!82 &704944266583562983
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2588,8 +2589,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5394306235857977010}
-  m_LocalRotation: {x: -0.23589452, y: 0.4962568, z: 0.14218448, w: 0.8233265}
-  m_LocalPosition: {x: -8.92951, y: -0.5127699, z: -44.736145}
+  m_LocalRotation: {x: -0.0887712, y: -0.28217477, z: -0.024714898, w: 0.9549274}
+  m_LocalPosition: {x: -8.206278, y: -0.08438194, z: -45.35221}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
