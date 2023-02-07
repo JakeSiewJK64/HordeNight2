@@ -8,7 +8,6 @@ public class WeaponSwapScript : MonoBehaviour
 
     [SerializeField]
     private Image[] weaponSlots;
-    private string path = "Images\\";
     private string[] weaponNames = { "Weapon1", "Weapon2", "Weapon3" };
     private float lastToggle = 0f;
     private float weaponSlotDuration = 2f;
@@ -52,8 +51,8 @@ public class WeaponSwapScript : MonoBehaviour
                 if(subimage.tag == "Select")
                 {
                     subimage.color = 
-                        image.name == name ? new Color(1f, 1f, 1f, 1f) 
-                            : subimage.color = new Color(1f, 1f, 1f, 0f);
+                        image.name == name ? new Color(255f, 195f, 18f, .5f) 
+                            : subimage.color = new Color(255f, 195f, 18f, 0f);
                 }
             }
         }
