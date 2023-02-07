@@ -17,9 +17,12 @@ public class BuystationScript : MonoBehaviour
         {
             if(Vector3.Distance(transform.position, player.transform.position) > 5)
             {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
                 UI.SetActive(false);
                 player.gameObject.GetComponent<InteractScript>()
                     .SetTM("");
+                player.gameObject.GetComponent<BulletSpawnScript>().interactingBuyStation = false;
             } else
             {
                 if(Input.GetKey(KeyCode.F)) 
@@ -27,6 +30,9 @@ public class BuystationScript : MonoBehaviour
                     UI.SetActive(true);
                     player.gameObject.GetComponent<InteractScript>()
                         .SetTM("");
+                    player.gameObject.GetComponent<BulletSpawnScript>().interactingBuyStation = true;
+                    Cursor.lockState = CursorLockMode.Confined;
+                    Cursor.visible = true;
                 }
             }
         }

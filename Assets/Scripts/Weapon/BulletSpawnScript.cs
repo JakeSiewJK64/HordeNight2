@@ -17,6 +17,8 @@ public class BulletSpawnScript : MonoBehaviour
     private float shootDelay = .1f;
     private string shootSoundPath = "Sound\\WeaponSounds\\";
 
+    public bool interactingBuyStation = false;
+
     private void Start()
     {
         cameraTransform = Camera.main.transform;
@@ -39,7 +41,7 @@ public class BulletSpawnScript : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetMouseButton(0) && Time.time - lastBulletSpawn > shootDelay)
+        if(Input.GetMouseButton(0) && Time.time - lastBulletSpawn > shootDelay && !interactingBuyStation)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Vector3 direction = (ray.origin + ray.direction * 100) - bulletSpawn.position;
