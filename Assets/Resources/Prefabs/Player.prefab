@@ -776,7 +776,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 70, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3696790157444263534
 CanvasRenderer:
@@ -1877,7 +1877,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3928145816145430990}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.555, z: 0.294}
+  m_LocalPosition: {x: 0.038, y: 0.335, z: 0.093}
   m_LocalScale: {x: 0.0625, y: 0.0625, z: 0.0625}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2628,7 +2628,7 @@ GameObject:
   - component: {fileID: 4700353329977262531}
   m_Layer: 0
   m_Name: PlayerBody
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2677,10 +2677,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.2032175
-  m_Height: 1.948897
+  m_Radius: 0.92
+  m_Height: 1.77
   m_Direction: 1
-  m_Center: {x: -0.0076417923, y: -0.15538484, z: 0}
+  m_Center: {x: -0.0076417923, y: -0.03, z: 0}
 --- !u!114 &5394306235840741843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2738,6 +2738,7 @@ MonoBehaviour:
   bulletSpawn: {fileID: 5207078978381934665}
   bullet: {fileID: 8755925224214531881, guid: b0f71f8e2584b7a48a54ccf663ebb4e2, type: 3}
   bulletTrail: {fileID: 282644192686669923, guid: 9497aa00c54787246b5af1b959728987, type: 3}
+  interactingBuyStation: 0
 --- !u!82 &704944266583562983
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2891,7 +2892,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5394306235857977010}
   m_LocalRotation: {x: -0.23589452, y: 0.4962568, z: 0.14218448, w: 0.8233265}
-  m_LocalPosition: {x: -26.00687, y: -0.51277006, z: -32.907585}
+  m_LocalPosition: {x: -1.9367604, y: -1.0092924, z: -1.9690416}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4136,7 +4137,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 70, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2375717329606479394
 CanvasRenderer:
@@ -4725,7 +4726,7 @@ MonoBehaviour:
   m_TargetMovementOnly: 1
   m_ScreenX: 0.4
   m_ScreenY: 0.4
-  m_CameraDistance: 2.6
+  m_CameraDistance: 3
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0
   m_DeadZoneDepth: 0
@@ -4850,8 +4851,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8168218867632106492}
-  m_LocalRotation: {x: -0.23589452, y: 0.4962568, z: 0.14218448, w: 0.8233265}
-  m_LocalPosition: {x: -1.6768703, y: -0.7727702, z: -1.7675838}
+  m_LocalRotation: {x: 0.32326594, y: -0, z: -0, w: 0.94630814}
+  m_LocalPosition: {x: -1.9367604, y: -1.0092924, z: -1.9690416}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4877,7 +4878,7 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 10
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 5394306235840741837}
+  m_LookAt: {fileID: 0}
   m_Follow: {fileID: 5394306235840741837}
   m_Lens:
     FieldOfView: 40
@@ -5167,7 +5168,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 70, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8366474845511960776
 CanvasRenderer:
@@ -5231,7 +5232,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9110429234101523019}
   m_LocalRotation: {x: 0.32326594, y: -0, z: -0, w: 0.94630814}
-  m_LocalPosition: {x: 0.3571968, y: 1.6169188, z: -1.1014233}
+  m_LocalPosition: {x: 0.806149, y: 3.1464636, z: -3.0789187}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5388,9 +5389,9 @@ MonoBehaviour:
   m_YDamping: 0
   m_ZDamping: 0
   m_TargetMovementOnly: 1
-  m_ScreenX: 0.3
-  m_ScreenY: 1.5
-  m_CameraDistance: 2.5
+  m_ScreenX: 0.27
+  m_ScreenY: 1
+  m_CameraDistance: 5
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0
   m_DeadZoneDepth: 0
@@ -5398,7 +5399,7 @@ MonoBehaviour:
   m_SoftZoneWidth: 0.04
   m_SoftZoneHeight: 0.4778598
   m_BiasX: 0
-  m_BiasY: -0.000000249465
+  m_BiasY: 0
   m_CenterOnActivate: 0
   m_GroupFramingMode: 2
   m_AdjustmentMode: 2
