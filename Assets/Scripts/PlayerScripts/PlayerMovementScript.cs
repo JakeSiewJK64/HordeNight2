@@ -47,11 +47,14 @@ public class PlayerMovementScript : MonoBehaviour
             horizontal * cameraTransform.right.normalized + vertical * cameraTransform.forward.normalized;
         moveDirection.y = 0;
         characterController.Move(moveDirection * moveSpeed * Time.deltaTime);
-
-        // todo: rotate player body
-        float targetAngle = cameraTransform.eulerAngles.y;
-        Quaternion rotation = Quaternion.Euler(0, targetAngle, 0);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, rotationSpeed * Time.deltaTime);
+        
+        if(GetComponent<Rigidbody>().velocity.magnitude > 8f)
+        {
+            // todo: rotate player body
+            float targetAngle = cameraTransform.eulerAngles.y;
+            Quaternion rotation = Quaternion.Euler(0, targetAngle, 0);
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, rotationSpeed * Time.deltaTime);
+        }        
 
         playerVelocity.y += gravityValue * Time.deltaTime;
         characterController.Move(playerVelocity * Time.deltaTime);
