@@ -41,8 +41,9 @@ public class PlayerInventoryScript : MonoBehaviour
            new Dictionary<string, Item> {
                 {
                    "Secondary",
-                   new Weapon("glock 18", "description", ItemType.Weapon, WeaponType.Sidearm, WeaponHolding.SECONDARY, 40,
-                   startingAmmo: 40, 
+                   new Weapon("glock 18", "description", ItemType.Weapon, WeaponType.Sidearm, WeaponHolding.SECONDARY, 
+                   reserveAmmo: 8,
+                   startingAmmo: 40,
                    damage: 70, 
                    magazineSize: 8, 
                    currentBullets: 8, 

@@ -1,3 +1,5 @@
+using System;
+
 public class Weapon : Item
 {
     public WeaponType weaponType { get; set; }
@@ -67,21 +69,34 @@ public class Weapon : Item
     {
         if (reserveAmmo > 0)
         {
-            if (reserveAmmo > GetMagazineSize())
+            if (reserveAmmo >= GetMagazineSize())
             {
+                // non empty 
                 if (currentBullets > 0)
                 {
                     reserveAmmo -= GetMagazineSize() - currentBullets;
                     currentBullets = GetMagazineSize();
                     return;
                 }
+                // empty reload
                 currentBullets = GetMagazineSize();
                 reserveAmmo -= GetMagazineSize();
             }
             else
             {
-                currentBullets = reserveAmmo;
-                reserveAmmo -= currentBullets;
+                float beforeReload = currentBullets;
+                float afterReload = currentBullets + reserveAmmo;
+                
+                if(afterReload > GetMagazineSize())
+                {                    
+                    afterReload = GetMagazineSize();
+                }
+
+                float difference = Math.Abs(afterReload - beforeReload);
+                
+                currentBullets = afterReload;
+                reserveAmmo -= difference;
+                return;
             }
         }
     }

@@ -11,6 +11,10 @@ public class PlayerMovementScript : MonoBehaviour
     private float gravityValue = -9.81f;
     private Animator animator;
     private bool groundedPlayer = false;
+    private float lastSlideTime;
+    public bool rolling = false;
+    private float dodgeForce = 200f;
+    private bool isRunning = false;
 
     private void Start()
     {
@@ -22,17 +26,34 @@ public class PlayerMovementScript : MonoBehaviour
 
     private void AnimatePlayer()
     {
-        animator.SetBool("PistolWalking", 
+        if (Input.GetKey(KeyCode.LeftShift) && gameObject.GetComponent<Rigidbody>().velocity.magnitude > 8)
+        {
+            if (!isRunning)
+            {
+                animator.SetBool("Running", true);
+                isRunning = true;
+            }
+        }
+        else
+        {
+            if (isRunning)
+            {
+                animator.SetBool("Running", false);
+                isRunning = false;
+            }
+        }
+
+        animator.SetBool("PistolWalking",
             Input.GetKey(KeyCode.W) ||
             Input.GetKey(KeyCode.S) ||
             Input.GetKey(KeyCode.A) ||
-            Input.GetKey(KeyCode.D)
-        );
+            Input.GetKey(KeyCode.D));
     }
 
     private void Update()
     {
         AnimatePlayer();
+        CheckSlideAnimation();
 
         groundedPlayer = characterController.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0)
@@ -46,7 +67,7 @@ public class PlayerMovementScript : MonoBehaviour
         Vector3 moveDirection = 
             horizontal * cameraTransform.right.normalized + vertical * cameraTransform.forward.normalized;
         moveDirection.y = 0;
-        characterController.Move(moveDirection * moveSpeed * Time.deltaTime);
+        characterController.Move(moveDirection * (Input.GetKey(KeyCode.LeftShift) ? moveSpeed * 2 : moveSpeed) * Time.deltaTime);
         
         if(GetComponent<Rigidbody>().velocity.magnitude > 8f)
         {
@@ -58,5 +79,38 @@ public class PlayerMovementScript : MonoBehaviour
 
         playerVelocity.y += gravityValue * Time.deltaTime;
         characterController.Move(playerVelocity * Time.deltaTime);
+    }
+
+    private void CheckSlideAnimation()
+    {
+        // check slide buffer
+        if (Time.time - lastSlideTime > 5f)
+        {
+            GetComponent<Collider>().isTrigger = false;
+        }
+
+        // check if slide animation is playing
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Slide"))
+        {
+            // check if slide animation is finished
+            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+            {
+                // transition to running animation
+                animator.Play("Idle", 0, 0.0f);
+            }
+        }
+        else
+        {
+            rolling = false;
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                characterController.Move(transform.forward * Time.deltaTime * dodgeForce);
+                animator.Play("Slide", 0, 0.0f);
+                GetComponent<Collider>().isTrigger = true;
+                rolling = true;
+                lastSlideTime = Time.time;
+            }
+        }
     }
 }
