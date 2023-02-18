@@ -3,23 +3,43 @@ using UnityEngine;
 
 public class BulletScript : MonoBehaviour
 {
-    private Dictionary<string, System.Action<Collision>> actions 
+    public float damage;
+    public ZombieScript zombieScript;
+
+    private GameObject player;
+
+    private Dictionary<string, System.Action<Collision>> actions
         = new Dictionary<string, System.Action<Collision>>();
 
-    void Start()
+    private void Start()
     {
         actions.Add("Environment", HandleEnvironment);
         actions.Add("Zombie", HandleZombie);
     }
 
-    private void HandleEnvironment(Collision obj)
-    {
-        Destroy(gameObject);
-    }
-
     private void HandleZombie(Collision obj)
     {
-        Destroy(obj.gameObject);
+        if (obj.gameObject)
+        {
+            player.GetComponent<ZombieHealthIndicator>().SetZombie(
+                obj.gameObject.GetComponent<ZombieScript>().zombie.zombieType.ToString(),
+                obj.gameObject.GetComponent<ZombieScript>().zombie.health);
+            player.GetComponent<PlayerPointsScript>().IncrementPoints(10);
+        }
+    }
+
+    public void SetOriginPlayer(GameObject player)
+    {
+        this.player = player;
+    }
+
+    public GameObject GetPlayer()
+    {
+        return player;
+    }
+
+    private void HandleEnvironment(Collision obj)
+    {
         Destroy(gameObject);
     }
 

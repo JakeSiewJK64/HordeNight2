@@ -22,7 +22,7 @@ public class BuystationScript : MonoBehaviour
                 UI.SetActive(false);
                 player.gameObject.GetComponent<InteractScript>()
                     .SetTM("");
-                player.gameObject.GetComponent<BulletSpawnScript>().interactingBuyStation = false   ;
+                //player.gameObject.GetComponent<BulletSpawnScript>().interactingBuyStation = false   ;
             } else
             {
                 if(Input.GetKey(KeyCode.F)) 
@@ -30,7 +30,7 @@ public class BuystationScript : MonoBehaviour
                     UI.SetActive(true);
                     player.gameObject.GetComponent<InteractScript>()
                         .SetTM("");
-                    player.gameObject.GetComponent<BulletSpawnScript>().interactingBuyStation = true;
+                    //player.gameObject.GetComponent<BulletSpawnScript>().interactingBuyStation = true;
                     Cursor.lockState = CursorLockMode.Confined;
                     Cursor.visible = true;
                 }

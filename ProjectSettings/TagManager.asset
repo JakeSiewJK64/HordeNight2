@@ -8,6 +8,8 @@ TagManager:
   - Zombie
   - Environment
   - Select
+  - Spawnpad
+  - Bullet
   layers:
   - Default
   - TransparentFX

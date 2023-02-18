@@ -41,7 +41,18 @@ public class PlayerInventoryScript : MonoBehaviour
            new Dictionary<string, Item> {
                 {
                    "Secondary",
-                   new Weapon("glock 18", "description", ItemType.Weapon, WeaponType.Sidearm, WeaponHolding.SECONDARY, 40, startingAmmo: 40, damage: 70, 8, 8, .2f, 2f, "glock", "glock_reload", "glock", "glock18", 1000)
+                   new Weapon("glock 18", "description", ItemType.Weapon, WeaponType.Sidearm, WeaponHolding.SECONDARY, 40,
+                   startingAmmo: 40, 
+                   damage: 70, 
+                   magazineSize: 8, 
+                   currentBullets: 8, 
+                   fireRate: .2f, 
+                   reloadTime: 2f, 
+                   shootingSoundPath: "handgun_shoot", 
+                   reloadingSoundPath: "handgun_reload", 
+                   weaponIconPath: "glock", 
+                   weaponPrefabPath: "glock18", 
+                   price: 1000)
                }
            }
         );

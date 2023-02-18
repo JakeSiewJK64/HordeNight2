@@ -1,18 +1,18 @@
 public class Weapon : Item
 {
-    WeaponType weaponType;
-    WeaponHolding weaponHolding;
-    float reserveAmmo;
-    float startingAmmo;
-    int damage;
-    float magazineSize;
-    float currentBullets;
-    float fireRate;
-    float reloadTime;
-    string shootingSoundPath;
-    string reloadingSoundPath;
-    string weaponIconPath;
-    string weaponPrefabPath;
+    public WeaponType weaponType { get; set; }
+    public WeaponHolding weaponHolding { get; set; }
+    public float reserveAmmo { get; set; }
+    public float startingAmmo { get; set; }
+    public int damage { get; set; }
+    public float magazineSize { get; set; }
+    public float currentBullets { get; set; }
+    public float fireRate { get; set; }
+    public float reloadTime { get; set; }
+    public string shootingSoundPath { get; set; }
+    public string reloadingSoundPath { get; set; }
+    public string weaponIconPath { get; set; }
+    public string weaponPrefabPath { get; set; }
 
     public Weapon(
         string name,
