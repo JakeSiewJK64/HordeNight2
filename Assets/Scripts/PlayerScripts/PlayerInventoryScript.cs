@@ -42,7 +42,7 @@ public class PlayerInventoryScript : MonoBehaviour
                 {
                    "Secondary",
                    new Weapon("glock 18", "description", ItemType.Weapon, WeaponType.Sidearm, WeaponHolding.SECONDARY, 
-                   reserveAmmo: 8,
+                   reserveAmmo: 40,
                    startingAmmo: 40,
                    damage: 70, 
                    magazineSize: 8, 

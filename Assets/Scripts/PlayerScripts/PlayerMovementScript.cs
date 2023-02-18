@@ -5,7 +5,6 @@ public class PlayerMovementScript : MonoBehaviour
     private Transform cameraTransform;
     private float moveSpeed = 5f;
     private CharacterController characterController;
-    private Transform playerTransform;
     private float rotationSpeed = 5f;
     private Vector3 playerVelocity;
     private float gravityValue = -9.81f;
@@ -20,17 +19,16 @@ public class PlayerMovementScript : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
-        playerTransform = transform;
         cameraTransform = Camera.main.transform;
     }
 
     private void AnimatePlayer()
     {
-        if (Input.GetKey(KeyCode.LeftShift) && gameObject.GetComponent<Rigidbody>().velocity.magnitude > 8)
+        if (Input.GetKey(KeyCode.LeftShift))
         {
             if (!isRunning)
             {
-                animator.SetBool("Running", true);
+                animator.SetBool("Running", gameObject.GetComponent<Rigidbody>().velocity.magnitude > 8);
                 isRunning = true;
             }
         }
@@ -69,7 +67,7 @@ public class PlayerMovementScript : MonoBehaviour
         moveDirection.y = 0;
         characterController.Move(moveDirection * (Input.GetKey(KeyCode.LeftShift) ? moveSpeed * 2 : moveSpeed) * Time.deltaTime);
         
-        if(GetComponent<Rigidbody>().velocity.magnitude > 8f)
+        if(GetComponent<Rigidbody>().velocity.magnitude > 8f || Input.GetMouseButton(1))
         {
             // todo: rotate player body
             float targetAngle = cameraTransform.eulerAngles.y;
