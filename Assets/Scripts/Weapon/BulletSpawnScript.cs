@@ -94,7 +94,7 @@ public class BulletSpawnScript : MonoBehaviour
 
     private void UpdateBulletCount()
     {
-        bulletCounterIndicator.text = currentWeapon.currentBullets + " / " + currentWeapon.reserveAmmo;
+        bulletCounterIndicator.text = currentWeapon.currentBullets + "\n" + currentWeapon.reserveAmmo;
     }
 
     private void SpawnBulletCasing(Rigidbody rb)
