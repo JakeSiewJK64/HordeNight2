@@ -97,21 +97,14 @@ public class BulletSpawnScript : MonoBehaviour
         bulletCounterIndicator.text = currentWeapon.currentBullets + "\n" + currentWeapon.reserveAmmo;
     }
 
-    private void SpawnBulletCasing(Rigidbody rb)
-    {
-        // trigger bullet casing effect
-        GameObject bulletCasing = Instantiate(bulletCasingPrefab, bulletCasingSpawn.position, bulletCasingSpawn.rotation);
-        rb.AddForce(bulletCasingPrefab.transform.forward);
-        Destroy(bulletCasing, bulletLifetime);
-    }
-
     private GameObject SpawnBullet(GameObject bullet, Vector3 pos, Vector3 direction, string type)
     {
-        Quaternion originalRotation = bullet.transform.rotation;
         Quaternion rotationBy90 = Quaternion.Euler(0, 0, 90);
-        GameObject bulletInstance = Instantiate(bullet, pos, originalRotation * rotationBy90);
+        GameObject bulletInstance = Instantiate(bullet, pos, rotationBy90);
+
         Rigidbody rb = bulletInstance.GetComponent<Rigidbody>();
-        rb.AddForce(direction * 100f, ForceMode.VelocityChange);
+        rb.AddForce(direction * (type == "BulletTrail" || type == "Bullet" ? 250f : 10f), ForceMode.VelocityChange);
+
         Destroy(bulletInstance, bulletLifetime);
         lastClickTime = Time.time;
         return bulletInstance;
@@ -148,7 +141,7 @@ public class BulletSpawnScript : MonoBehaviour
                     bulletFromCamera.GetComponent<BulletScript>().SetOriginPlayer(gameObject);
 
                     // todo: spawn bullet trail
-                    // SpawnBullet(bulletTrail, bulletSpawn.position + cameraTransform.forward * 5, direction.normalized, "BulletTrail");
+                    SpawnBullet(bulletCasingPrefab, bulletSpawn.position + cameraTransform.forward * 5, direction.normalized, "Casing");
                 }
                 else
                 {
