@@ -4,7 +4,7 @@ using UnityEngine;
 public class ZombieScript : MonoBehaviour
 {
     public Zombie zombie;
-    public GameObject player;
+    private GameObject player;
     private Animator zombieController;
     private float followRadius = 1000f;
 

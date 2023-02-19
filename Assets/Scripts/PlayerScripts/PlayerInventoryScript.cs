@@ -39,22 +39,38 @@ public class PlayerInventoryScript : MonoBehaviour
     {
         inventory = new Inventory(
            new Dictionary<string, Item> {
-                {
-                   "Secondary",
-                   new Weapon("glock 18", "description", ItemType.Weapon, WeaponType.Sidearm, WeaponHolding.SECONDARY, 
-                   reserveAmmo: 40,
-                   startingAmmo: 40,
-                   damage: 70, 
-                   magazineSize: 8, 
-                   currentBullets: 8, 
-                   fireRate: .2f, 
-                   reloadTime: 2f, 
-                   shootingSoundPath: "handgun_shoot", 
-                   reloadingSoundPath: "handgun_reload", 
-                   weaponIconPath: "glock", 
-                   weaponPrefabPath: "glock18", 
-                   price: 1000)
-               }
+               // {
+               //    "Secondary",
+               //    new Weapon("glock 18", "description", ItemType.Weapon, WeaponType.Sidearm, WeaponHolding.SECONDARY, 
+               //    reserveAmmo: 40,
+               //    startingAmmo: 40,
+               //    damage: 70, 
+               //    magazineSize: 8, 
+               //    currentBullets: 8, 
+               //    fireRate: .2f, 
+               //    reloadTime: 2f, 
+               //    shootingSoundPath: "handgun_shoot", 
+               //    reloadingSoundPath: "handgun_reload", 
+               //    weaponIconPath: "glock", 
+               //    weaponPrefabPath: "glock18", 
+               //    price: 1000)
+               //},
+               {
+                    "Secondary",
+                    new Weapon("glock 18", "description", ItemType.Weapon, WeaponType.Sidearm, WeaponHolding.SECONDARY,
+                    reserveAmmo: 10000,
+                    startingAmmo: 10000,
+                    damage: 70,
+                    magazineSize: 30,
+                    currentBullets: 30,
+                    fireRate: .1f,
+                    reloadTime: 1f,
+                    shootingSoundPath: "handgun_shoot",
+                    reloadingSoundPath: "handgun_reload",
+                    weaponIconPath: "glock",
+                    weaponPrefabPath: "glock18",
+                    price: 1000)
+               },
            }
         );
     }

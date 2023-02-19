@@ -101,7 +101,6 @@ public class BulletSpawnScript : MonoBehaviour
     {
         Quaternion rotationBy90 = Quaternion.Euler(0, 0, 90);
         GameObject bulletInstance = Instantiate(bullet, pos, rotationBy90);
-
         Rigidbody rb = bulletInstance.GetComponent<Rigidbody>();
         rb.AddForce(direction * (type == "BulletTrail" || type == "Bullet" ? 250f : 10f), ForceMode.VelocityChange);
 
@@ -130,33 +129,27 @@ public class BulletSpawnScript : MonoBehaviour
                 // play shoot sound
                 PlayWeaponSound(shootingSound);
 
-                GameObject bullet;
-                Rigidbody rb;
+                Vector3 bulletspawnposition = bulletSpawn.transform.position;
+
                 if (currentWeapon.weaponType != WeaponType.Shotgun)
                 {
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     Vector3 direction = (ray.origin + ray.direction * 100) - bulletSpawn.position;
-                    GameObject bulletFromCamera = SpawnBullet(bulletPrefab, cameraTransform.position + cameraTransform.forward * 5, direction.normalized, "Bullet");
-                    bulletFromCamera.GetComponent<MeshRenderer>().enabled = false;
+                    GameObject bulletFromCamera = SpawnBullet(bulletPrefab, bulletspawnposition, direction.normalized, "Bullet");
                     bulletFromCamera.GetComponent<BulletScript>().SetOriginPlayer(gameObject);
 
-                    // todo: spawn bullet trail
+                    // spawn bullet casing
                     SpawnBullet(bulletCasingPrefab, bulletSpawn.position + cameraTransform.forward * 5, direction.normalized, "Casing");
                 }
                 else
                 {
                     for (int i = 0; i < 12; i++)
                     {
-                        bullet = Instantiate(bulletPrefab, bulletSpawn.position, Quaternion.identity);
-                        bullet.GetComponent<BulletScript>().SetOriginPlayer(gameObject);
-
-                        // setting the pellet spread
-                        Vector3 spread = new Vector3(Random.Range(-spreadAngle, spreadAngle), Random.Range(-spreadAngle, spreadAngle), Random.Range(-spreadAngle, spreadAngle));
-
-                        bullet.transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + spread);
-                        rb = bullet.GetComponent<Rigidbody>();
-                        rb.AddForce(transform.forward * 50);
-                        Destroy(bullet, bulletLifetime);
+                        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                        Vector3 direction = (ray.origin + ray.direction * 100) - bulletSpawn.position;
+                        GameObject bulletFromCamera = SpawnBullet(bulletPrefab, bulletspawnposition, direction.normalized, "Bullet");
+                        bulletFromCamera.GetComponent<BulletScript>().SetOriginPlayer(gameObject);
+                        SpawnBullet(bulletCasingPrefab, bulletSpawn.position + cameraTransform.forward * 5, direction.normalized, "Casing");
                     }
                 }
             }
