@@ -24,28 +24,7 @@ public class PlayerMovementScript : MonoBehaviour
 
     private void AnimatePlayer()
     {
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            if (!isRunning)
-            {
-                animator.SetBool("Running", gameObject.GetComponent<Rigidbody>().velocity.magnitude > 8);
-                isRunning = true;
-            }
-        }
-        else
-        {
-            if (isRunning)
-            {
-                animator.SetBool("Running", false);
-                isRunning = false;
-            }
-        }
-
-        animator.SetBool("PistolWalking",
-            Input.GetKey(KeyCode.W) ||
-            Input.GetKey(KeyCode.S) ||
-            Input.GetKey(KeyCode.A) ||
-            Input.GetKey(KeyCode.D));
+        animator.SetBool("PistolWalking", WASDCheck());
     }
 
     private void Update()
@@ -66,8 +45,7 @@ public class PlayerMovementScript : MonoBehaviour
             horizontal * cameraTransform.right.normalized + vertical * cameraTransform.forward.normalized;
         moveDirection.y = 0;
         characterController.Move(moveDirection * (Input.GetKey(KeyCode.LeftShift) ? moveSpeed * 2 : moveSpeed) * Time.deltaTime);
-        
-        if(GetComponent<Rigidbody>().velocity.magnitude > 8f || Input.GetMouseButton(1) || Input.GetMouseButton(0))
+        if(WASDCheck() || Input.GetMouseButton(1) || Input.GetMouseButton(0))
         {
             // todo: rotate player body
             float targetAngle = cameraTransform.eulerAngles.y;
@@ -77,6 +55,11 @@ public class PlayerMovementScript : MonoBehaviour
 
         playerVelocity.y += gravityValue * Time.deltaTime;
         characterController.Move(playerVelocity * Time.deltaTime);
+    }
+
+    private bool WASDCheck()
+    {
+        return Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D);
     }
 
     private void CheckSlideAnimation()
