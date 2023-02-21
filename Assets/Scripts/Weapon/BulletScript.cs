@@ -21,10 +21,10 @@ public class BulletScript : MonoBehaviour
     {
         if (obj.gameObject)
         {
-            player.GetComponent<ZombieHealthIndicator>().SetZombie(
-                obj.gameObject.GetComponent<ZombieScript>().zombie.zombieType.ToString(),
-                obj.gameObject.GetComponent<ZombieScript>().zombie.health);
             player.GetComponent<PlayerPointsScript>().IncrementPoints(10);
+            player.GetComponent<ZombieHealthIndicator>().SetZombie(
+                obj.gameObject.GetComponentInChildren<ZombieScript>().zombie.zombieType.ToString(),
+                obj.gameObject.GetComponentInChildren<ZombieScript>().zombie.health);
         }
     }
 

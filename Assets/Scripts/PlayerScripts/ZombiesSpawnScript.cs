@@ -23,6 +23,9 @@ public class ZombiesSpawnScript : MonoBehaviour
     private float lastZombieSpawnTime;
 
     private float spawnDelay = 1f;
+
+    private int performanceLimit = 5;
+
     private void Checkspawnpad()
     {
         spawnPads = new List<GameObject>();
@@ -48,7 +51,7 @@ public class ZombiesSpawnScript : MonoBehaviour
             GameObject spawnPad = spawnPads[Random.Range(0, spawnPads.Count - 1)];
             spawnPos = new Vector3(spawnPad.transform.position.x, spawnPad.transform.position.y + 3, spawnPad.transform.position.z);
             GameObject zombie = Instantiate(prefabToSpawn, spawnPos, Quaternion.identity);
-            zombie.GetComponent<ZombieScript>().zombie = new Zombie(
+            zombie.GetComponentInChildren<ZombieScript>().zombie = new Zombie(
                 zombieType: ZombieType.Zombie,
                 speed: Random.Range(2, 5),
                 health: 100 + 100 * (GetComponent<ZombiesKillCounter>().GetRound() / GetComponent<ZombiesKillCounter>().GetBloodMoon()),
@@ -77,7 +80,10 @@ public class ZombiesSpawnScript : MonoBehaviour
         }
         else
         {
-            SpawnZombies();
+            if(remainingZombies < performanceLimit)
+            {
+                SpawnZombies();
+            }
         }
     }
 

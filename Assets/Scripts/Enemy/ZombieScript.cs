@@ -4,40 +4,22 @@ using UnityEngine;
 public class ZombieScript : MonoBehaviour
 {
     public Zombie zombie;
-    private GameObject player;
+
+    private string soundPath = "Raw\\Sound\\Zombie\\";
     private Animator zombieController;
-    private float followRadius = 1000f;
 
     // player info
     private ZombiesKillCounter counter;
     private PlayerPointsScript playerPoints;
     private ZombieHealthIndicator indicator;
 
-    private string soundPath = "Raw\\Sound\\Zombie\\";
-
     private void Start()
     {
         zombieController = GetComponentInChildren<Animator>();
-        player = GetPlayer();
-    }
-
-    private GameObject GetPlayer()
-    {
-        return player = GameObject.FindWithTag("Player");
     }
 
     private void Update()
     {
-        float distanceFromTarget = Vector3.Distance(transform.position, player.transform.position);
-        if (distanceFromTarget <= followRadius)
-        {
-            Vector3 targetPosition = player.transform.position;
-            transform.position = Vector3.MoveTowards(
-                transform.position,
-                targetPosition,
-                zombie.speed * Time.deltaTime);
-            transform.LookAt(player.transform);
-        }
         CheckHealth();
     }
 
@@ -73,8 +55,16 @@ public class ZombieScript : MonoBehaviour
             counter.IncrementCounter();
             playerPoints.IncrementPoints(100f);
             indicator.HideUI();
-            Destroy(gameObject);
+            Destroy(transform.parent.gameObject);
         }
+    }
+
+    public void SetPlayerInfo(Collision collision)
+    {
+        counter = collision.gameObject.GetComponent<BulletScript>().GetPlayer().GetComponent<ZombiesKillCounter>();
+        playerPoints = collision.gameObject.GetComponent<BulletScript>().GetPlayer().GetComponent<PlayerPointsScript>();
+        indicator = collision.gameObject.GetComponent<BulletScript>().GetPlayer().GetComponent<ZombieHealthIndicator>();
+        collision.gameObject.GetComponent<BulletScript>().GetPlayer().GetComponent<ZombieHealthIndicator>().SetZombie(zombie.zombieType.ToString(), zombie.health);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -82,13 +72,8 @@ public class ZombieScript : MonoBehaviour
         if (collision.gameObject.tag == "Bullet")
         {
             zombie.health -= collision.gameObject.GetComponent<BulletScript>().damage;
-
-            // update zombie health bar info
-            counter = collision.gameObject.GetComponent<BulletScript>().GetPlayer().GetComponent<ZombiesKillCounter>();
-            playerPoints = collision.gameObject.GetComponent<BulletScript>().GetPlayer().GetComponent<PlayerPointsScript>();
-
-            collision.gameObject.GetComponent<BulletScript>().GetPlayer().GetComponent<ZombieHealthIndicator>().SetZombie(zombie.zombieType.ToString(), zombie.health);
-            indicator = collision.gameObject.GetComponent<BulletScript>().GetPlayer().GetComponent<ZombieHealthIndicator>();
+            collision.gameObject.GetComponent<BulletScript>().GetPlayer().GetComponent<HitMarker>().UpdateCursor(Hitmarker.hitmarker);
+            SetPlayerInfo(collision);
             Destroy(collision.gameObject);
         }
     }

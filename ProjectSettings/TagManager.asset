@@ -10,6 +10,7 @@ TagManager:
   - Select
   - Spawnpad
   - Bullet
+  - Head
   layers:
   - Default
   - TransparentFX
