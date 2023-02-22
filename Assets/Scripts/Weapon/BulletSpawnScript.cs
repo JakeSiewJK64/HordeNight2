@@ -36,8 +36,6 @@ public class BulletSpawnScript : MonoBehaviour
 
     private float bulletSpeed = 1f;
 
-    private bool interactingBuyStation = false;
-
     private void Start()
     {
         cameraTransform = Camera.main.transform;
@@ -52,11 +50,6 @@ public class BulletSpawnScript : MonoBehaviour
         currentWeapon = newWeapon;
         reloading = false;
         UpdateWeaponSound();
-    }
-
-    public void SetInteractingBuyStation(bool interacting)
-    {
-        interactingBuyStation = interacting;
     }
 
     private void UpdateWeaponSound()
@@ -157,7 +150,7 @@ public class BulletSpawnScript : MonoBehaviour
 
     private void Update()
     {
-        if (Time.timeScale == 1.0f && !interactingBuyStation)
+        if (Time.timeScale == 1.0f && !GetComponent<PlayerBuyStationInteraction>().GetInteracting())
         {
             UpdateBulletCount();
             checkReloading();

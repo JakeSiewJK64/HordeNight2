@@ -8,8 +8,11 @@ public class MaxAmmo : MonoBehaviour
         {
             foreach(var weapon in collision.gameObject.GetComponent<PlayerInventoryScript>().GetAllWeapons())
             {
-                weapon.currentBullets = weapon.magazineSize;
-                weapon.reserveAmmo = weapon.startingAmmo;
+                if(weapon != null)
+                {
+                    weapon.currentBullets = weapon.magazineSize;
+                    weapon.reserveAmmo = weapon.startingAmmo;
+                }
             }
         }
     }

@@ -41,21 +41,20 @@ public class BuystationScript : MonoBehaviour
                 Cursor.visible = false;
                 UI.SetActive(false);
                 interacting = false;
-                player.gameObject.GetComponent<InteractScript>()
-                    .SetTM("");
-                player.gameObject.GetComponent<BulletSpawnScript>().SetInteractingBuyStation(false);
+                player.gameObject.GetComponent<PlayerBuyStationInteraction>().SetInteracting(false);
+                descriptionViewholder.SetActive(false);
+                player.gameObject.GetComponent<InteractScript>().SetTM("");
             } else
             {
                 if(Input.GetKey(KeyCode.F)) 
                 { 
-                    UI.SetActive(true);
-                    interacting = true;
-                    player.gameObject.GetComponent<InteractScript>()
-                        .SetTM("");
-                    player.gameObject.GetComponent<BulletSpawnScript>().SetInteractingBuyStation(true);
-                    playerPoints.text = player.GetComponent<PlayerPointsScript>().GetPoints() + " PTS";
                     Cursor.lockState = CursorLockMode.Confined;
                     Cursor.visible = true;
+                    UI.SetActive(true);
+                    interacting = true;
+                    player.gameObject.GetComponent<PlayerBuyStationInteraction>().SetInteracting(true);
+                    playerPoints.text = player.GetComponent<PlayerPointsScript>().GetPoints() + " PTS";
+                    player.gameObject.GetComponent<InteractScript>().SetTM("");
                 }
             }
         }
@@ -133,7 +132,7 @@ public class BuystationScript : MonoBehaviour
             new Weapon("shotgun", "description", ItemType.Weapon, WeaponType.Shotgun, WeaponHolding.PRIMARY,
                    reserveAmmo: 40,
                    startingAmmo: 40,
-                   damage: 70,
+                   damage: 80,
                    magazineSize: 8,
                    currentBullets: 8,
                    fireRate: .2f,
