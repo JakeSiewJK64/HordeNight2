@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ViewholderItems
 {
@@ -10,6 +9,7 @@ public class ViewholderItems
     public string magazineSize { get; set; }
     public string points { get; set; }
     public Sprite weaponProfile { get; set; }
+    public Weapon weapon { get; set; }
 
     public ViewholderItems(
         string name, 
@@ -18,8 +18,10 @@ public class ViewholderItems
         string reloadSpeed, 
         string magazineSize, 
         string points, 
-        Sprite weaponProfile)
+        Sprite weaponProfile,
+        Weapon weapon)
     {
+        this.weapon = weapon;
         this.name = name;
         this.damage = damage;
         this.rateOfFire = rateOfFire;

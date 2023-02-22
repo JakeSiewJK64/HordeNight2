@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,15 +12,21 @@ public class BuystationScript : MonoBehaviour
     [SerializeField]
     private ScrollRect scrollArea;
 
+    [SerializeField]
+    private TextMeshProUGUI playerPoints;
+
+    [SerializeField]
+    private GameObject descriptionViewholder;
+
     private GameObject player;
     private string imagePath = "Images\\Weapons\\";
     private bool interacting = false;
     private List<Weapon> weapons = new List<Weapon>();
 
-
     private void Start()
     {
         UI.SetActive(false);
+        descriptionViewholder.SetActive(false);
         InitializeItems();
         InitializeViewholders();
     }
@@ -46,6 +53,7 @@ public class BuystationScript : MonoBehaviour
                     player.gameObject.GetComponent<InteractScript>()
                         .SetTM("");
                     player.gameObject.GetComponent<BulletSpawnScript>().SetInteractingBuyStation(true);
+                    playerPoints.text = player.GetComponent<PlayerPointsScript>().GetPoints() + " PTS";
                     Cursor.lockState = CursorLockMode.Confined;
                     Cursor.visible = true;
                 }
@@ -165,9 +173,8 @@ public class BuystationScript : MonoBehaviour
                     reloadSpeed: item.reloadTime.ToString(),
                     magazineSize: item.magazineSize.ToString(),
                     points: item.price.ToString(),
-                    weaponProfile: Resources.Load<Sprite>(Path.Combine(imagePath, item.weaponIconPath.ToString()))
-                    )
-                );
+                    weaponProfile: Resources.Load<Sprite>(Path.Combine(imagePath, item.weaponIconPath.ToString())),
+                    weapon: item));
             }
         }
     }
@@ -185,5 +192,11 @@ public class BuystationScript : MonoBehaviour
                     .SetTM("[ F ] to interact with buy station");
             }
         }
+    }
+
+    public void UpdateDescription(Weapon weapon)
+    {
+        descriptionViewholder.SetActive(true);
+        descriptionViewholder.GetComponent<BuyStationDescription>().SetInfo(weapon);
     }
 }

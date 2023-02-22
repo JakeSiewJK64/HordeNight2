@@ -6,8 +6,11 @@ public class BuyStationViewholder : MonoBehaviour
 {
     [SerializeField]
     private TextMeshProUGUI weaponName, damage, rateOfFire, magazineSize, price, reloadSpeed;
+
     [SerializeField]
     private Image weaponProfile;
+
+    private Weapon selectedWeapon;
 
     public void SetInfo(ViewholderItems item)
     {
@@ -18,5 +21,11 @@ public class BuyStationViewholder : MonoBehaviour
         reloadSpeed.text = "REL\n" + item.reloadSpeed + "s";
         price.text = item.points + " pts";
         weaponProfile.sprite = item.weaponProfile;
+        selectedWeapon = item.weapon;
+    }
+
+    public void OnBuyButtonPressed()
+    {
+        GetComponentInParent<BuystationScript>().UpdateDescription(selectedWeapon);
     }
 }
