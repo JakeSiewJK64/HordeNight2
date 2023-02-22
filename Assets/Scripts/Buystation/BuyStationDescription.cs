@@ -24,9 +24,9 @@ public class BuyStationDescription : MonoBehaviour
         weaponName.text = weapon.name;
         weaponHolding.text = weapon.weaponHolding.ToString();
         weaponType.text = weapon.weaponType.ToString();
-        damage.text = weapon.damage.ToString();
-        reloadSpeed.text = weapon.reloadTime.ToString();
-        rateOfFire.text = weapon.fireRate.ToString();
+        damage.text = "DMG\n" + weapon.damage.ToString();
+        reloadSpeed.text = "REL\n" + weapon.reloadTime.ToString();
+        rateOfFire.text = "ROF\n" + weapon.fireRate.ToString();
         headshotDamage.text = (weapon.damage * 2) + "";
 
         switch(weapon.weaponType) 

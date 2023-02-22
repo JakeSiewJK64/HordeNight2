@@ -18,6 +18,9 @@ public class BuystationScript : MonoBehaviour
     [SerializeField]
     private GameObject descriptionViewholder;
 
+    [SerializeField]
+    private Transform platform;
+
     private GameObject player;
     private string imagePath = "Images\\Weapons\\";
     private bool interacting = false;
@@ -197,5 +200,19 @@ public class BuystationScript : MonoBehaviour
     {
         descriptionViewholder.SetActive(true);
         descriptionViewholder.GetComponent<BuyStationDescription>().SetInfo(weapon);
+    }
+
+    public void SetSelectedViewholder(string id)
+    {
+        foreach(Transform child in scrollArea.content)
+        {
+            if (child.gameObject.GetComponent<BuyStationViewholder>().GetId().Equals(id))
+            {
+                child.gameObject.GetComponent<Image>().color = Color.green;
+            } else
+            {
+                child.gameObject.GetComponent<Image>().color = Color.red;
+            }
+        }
     }
 }
