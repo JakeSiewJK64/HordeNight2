@@ -24,7 +24,7 @@ public class ZombiesSpawnScript : MonoBehaviour
 
     private float spawnDelay = 1f;
 
-    private int performanceLimit = 5;
+    private int performanceLimit = 30;
 
     private void Checkspawnpad()
     {
@@ -63,13 +63,12 @@ public class ZombiesSpawnScript : MonoBehaviour
 
     private void CheckZombies()
     {
-        remainingZombies = GameObject.FindGameObjectsWithTag("Zombie").Length;
-
-        zombieCounter.text = "Remaining Zombies: " + remainingZombies;
-        roundCounter.text = "Round: " + GetComponent<ZombiesKillCounter>().GetRound();
-
         int zombiesKilled = GetComponent<ZombiesKillCounter>().GetZombiesKilled();
         int maxZombies = GetComponent<ZombiesKillCounter>().GetMaxZombies();
+
+        remainingZombies = GameObject.FindGameObjectsWithTag("Zombie").Length;
+        zombieCounter.text = "Remaining Zombies: " + remainingZombies;
+        roundCounter.text = "Round: " + GetComponent<ZombiesKillCounter>().GetRound();
 
         if (remainingZombies <= maxZombies && remainingZombies + zombiesKilled == maxZombies)
         {
