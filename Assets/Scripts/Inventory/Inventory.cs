@@ -9,17 +9,6 @@ public class Inventory
         this.inventory = inventory;
     }
 
-    public List<Item> GetAllWeaponsFromInventory()
-    {
-        List<Item> weaponList = new List<Item> { inventory["Secondary"] };
-
-        if (inventory.ContainsKey("Primary"))
-        {
-            weaponList.Add(inventory["Primary"]);
-        }
-        return weaponList;
-    }
-
     public Item GetPrimaryWeapon()
     {
         try
@@ -34,6 +23,15 @@ public class Inventory
         try
         {
             return inventory["Secondary"];
+        }
+        catch { return null; }
+    }
+
+    public Item GetThirdWeapon()
+    {
+        try
+        {
+            return inventory["Tertiary"];
         }
         catch { return null; }
     }

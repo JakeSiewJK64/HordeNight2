@@ -8,56 +8,59 @@ public class PlayerInventoryScript : MonoBehaviour
     private Inventory inventory;
     private Weapon currentWeapon;
 
-    private string imagePath = "Raw\\Img\\";
+    private string imagePath = "Images\\Weapons\\";
 
     [SerializeField]
-    private Image primaryWeaponHotBar;
+    private Image[] weaponHotbar;
 
-    [SerializeField]
-    private Image secondaryWeaponHotBar;
+    private List<Weapon> playerWeapons;
 
     private void Awake()
     {
         InitializeInventory();
         currentWeapon = (Weapon)inventory.GetSecondaryWeapon();
+        playerWeapons = new List<Weapon>
+        {
+            (Weapon)inventory.GetPrimaryWeapon(),
+            (Weapon)inventory.GetSecondaryWeapon(),
+            (Weapon)inventory.GetThirdWeapon(),
+        };
         UpdateWeaponHotbarSprites();
+    }
+
+    public void SwapWeapon(int index)
+    {
+        currentWeapon = playerWeapons[index];
+        GetComponent<BulletSpawnScript>().ChangeWeapon(currentWeapon);
+    }
+
+    public List<Weapon> GetAllWeapons()
+    {
+        return playerWeapons;
     }
 
     public void UpdateWeaponHotbarSprites()
     {
-        if (inventory.GetPrimaryWeapon() != null)
+        for(int i = 0; i < playerWeapons.Count; i++)
         {
-            primaryWeaponHotBar.GetComponent<Image>().sprite = Resources.Load<Sprite>(Path.Combine(imagePath, ((Weapon)inventory.GetPrimaryWeapon()).GetWeaponIconPath()));
-        }
-        else if (inventory.GetSecondaryWeapon() != null)
-        {
-            secondaryWeaponHotBar.GetComponent<Image>().sprite = Resources.Load<Sprite>(Path.Combine(imagePath, ((Weapon)inventory.GetSecondaryWeapon()).GetWeaponIconPath()));
+            if (playerWeapons[i] != null)
+            {
+                weaponHotbar[i].GetComponent<Image>().gameObject.SetActive(true);
+                weaponHotbar[i].GetComponent<Image>().sprite = Resources.Load<Sprite>(Path.Combine(imagePath, playerWeapons[i].GetWeaponIconPath()));
+            } else
+            {
+                weaponHotbar[i].GetComponent<Image>().gameObject.SetActive(false);
+            }
         }
     }
 
     private void InitializeInventory()
     {
         inventory = new Inventory(
-           new Dictionary<string, Item> {
-               // {
-               //    "Secondary",
-               //    new Weapon("glock 18", "description", ItemType.Weapon, WeaponType.Sidearm, WeaponHolding.SECONDARY, 
-               //    reserveAmmo: 40,
-               //    startingAmmo: 40,
-               //    damage: 70, 
-               //    magazineSize: 8, 
-               //    currentBullets: 8, 
-               //    fireRate: .2f, 
-               //    reloadTime: 2f, 
-               //    shootingSoundPath: "handgun_shoot", 
-               //    reloadingSoundPath: "handgun_reload", 
-               //    weaponIconPath: "glock", 
-               //    weaponPrefabPath: "glock18", 
-               //    price: 1000)
-               //},
+           new Dictionary<string, Item> {                
                {
-                    "Secondary",
-                    new Weapon("glock 18", "description", ItemType.Weapon, WeaponType.Sidearm, WeaponHolding.SECONDARY,
+                    "Primary",
+                    new Weapon("m4", "description", ItemType.Weapon, WeaponType.AssaultRifle, WeaponHolding.PRIMARY,
                     reserveAmmo: 10000,
                     startingAmmo: 10000,
                     damage: 70,
@@ -67,21 +70,44 @@ public class PlayerInventoryScript : MonoBehaviour
                     reloadTime: 1f,
                     shootingSoundPath: "handgun_shoot",
                     reloadingSoundPath: "handgun_reload",
-                    weaponIconPath: "glock",
+                    weaponIconPath: "m4",
                     weaponPrefabPath: "glock18",
                     price: 1000)
                },
+               {
+                   "Tertiary",
+                   new Weapon("shotgun", "description", ItemType.Weapon, WeaponType.Shotgun, WeaponHolding.PRIMARY,
+                   reserveAmmo: 40,
+                   startingAmmo: 40,
+                   damage: 70,
+                   magazineSize: 8,
+                   currentBullets: 8,
+                   fireRate: .2f,
+                   reloadTime: 2f,
+                   shootingSoundPath: "handgun_shoot",
+                   reloadingSoundPath: "handgun_reload",
+                   weaponIconPath: "shotgun_1",
+                   weaponPrefabPath: "glock18",
+                   price: 1000)
+               },
+               {
+                   "Secondary",
+                   new Weapon("glock 18", "description", ItemType.Weapon, WeaponType.Sidearm, WeaponHolding.SECONDARY,
+                   reserveAmmo: 40,
+                   startingAmmo: 40,
+                   damage: 70,
+                   magazineSize: 8,
+                   currentBullets: 8,
+                   fireRate: .2f,
+                   reloadTime: 2f,
+                   shootingSoundPath: "handgun_shoot",
+                   reloadingSoundPath: "handgun_reload",
+                   weaponIconPath: "glock",
+                   weaponPrefabPath: "glock18",
+                   price: 1000)
+               },
            }
         );
-    }
-
-    private void CheckInput()
-    {
-    }
-
-    private void Update()
-    {
-        CheckInput();
     }
 
     public Weapon GetCurrentWeapon()

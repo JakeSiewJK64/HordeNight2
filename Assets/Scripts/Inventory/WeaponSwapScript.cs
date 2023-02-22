@@ -32,6 +32,7 @@ public class WeaponSwapScript : MonoBehaviour
                 weaponSlotUI.gameObject.SetActive(true);
                 lastToggle = Time.time;
                 UpdateWeaponUI(weaponNames[i]);
+                GetComponent<PlayerInventoryScript>().SwapWeapon(i);
                 break;
             }
         }

@@ -36,18 +36,6 @@ public class BulletSpawnScript : MonoBehaviour
 
     private float bulletSpeed = 1f;
 
-    public void ChangeWeapon(Weapon newWeapon)
-    {
-        currentWeapon = newWeapon;
-        reloading = false;
-        UpdateWeaponSound();
-    }
-
-    public Weapon GetCurrentWeapon()
-    {
-        return currentWeapon;
-    }
-
     private void Start()
     {
         cameraTransform = Camera.main.transform;
@@ -56,6 +44,13 @@ public class BulletSpawnScript : MonoBehaviour
         // initialize audio
         audioSource = GetComponent<AudioSource>();
         reloadSound = Resources.Load<AudioClip>(Path.Combine(soundFolder, currentWeapon.reloadingSoundPath));
+        UpdateWeaponSound();
+    }
+
+    public void ChangeWeapon(Weapon newWeapon)
+    {
+        currentWeapon = newWeapon;
+        reloading = false;
         UpdateWeaponSound();
     }
 
