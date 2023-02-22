@@ -15,6 +15,12 @@ public class BulletScript : MonoBehaviour
     {
         actions.Add("Environment", HandleEnvironment);
         actions.Add("Zombie", HandleZombie);
+        actions.Add("Head", HandleHead);
+    }
+
+    private void HandleHead(Collision col)
+    {
+        player.GetComponent<PlayerPointsScript>().IncrementPoints(10);
     }
 
     private void HandleZombie(Collision obj)
