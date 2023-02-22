@@ -36,12 +36,12 @@ public class BulletSpawnScript : MonoBehaviour
 
     private float bulletSpeed = 1f;
 
+    private bool interactingBuyStation = false;
+
     private void Start()
     {
         cameraTransform = Camera.main.transform;
         currentWeapon = gameObject.GetComponent<PlayerInventoryScript>().GetCurrentWeapon();
-
-        // initialize audio
         audioSource = GetComponent<AudioSource>();
         reloadSound = Resources.Load<AudioClip>(Path.Combine(soundFolder, currentWeapon.reloadingSoundPath));
         UpdateWeaponSound();
@@ -54,10 +54,18 @@ public class BulletSpawnScript : MonoBehaviour
         UpdateWeaponSound();
     }
 
+    public void SetInteractingBuyStation(bool interacting)
+    {
+        interactingBuyStation = interacting;
+    }
+
     private void UpdateWeaponSound()
     {
-        shootingSound = Resources.Load<AudioClip>(Path.Combine(soundFolder, currentWeapon.shootingSoundPath));
-        reloadSound = Resources.Load<AudioClip>(Path.Combine(soundFolder, currentWeapon.reloadingSoundPath));
+        if(currentWeapon != null)
+        {
+            shootingSound = Resources.Load<AudioClip>(Path.Combine(soundFolder, currentWeapon.shootingSoundPath));
+            reloadSound = Resources.Load<AudioClip>(Path.Combine(soundFolder, currentWeapon.reloadingSoundPath));
+        }
     }
 
     private void PlayWeaponSound(AudioClip clip)
@@ -73,7 +81,7 @@ public class BulletSpawnScript : MonoBehaviour
         }
 
         // todo: factor in reload speed upgrade stats
-        if (Time.time - lastClickTime > currentWeapon.reloadTime)
+        if (currentWeapon != null && Time.time - lastClickTime > currentWeapon.reloadTime)
         {
             reloading = false;
         }
@@ -91,7 +99,10 @@ public class BulletSpawnScript : MonoBehaviour
 
     private void UpdateBulletCount()
     {
-        bulletCounterIndicator.text = currentWeapon.currentBullets + "\n" + currentWeapon.reserveAmmo;
+        if(currentWeapon != null)
+        {
+            bulletCounterIndicator.text = currentWeapon.currentBullets + "\n" + currentWeapon.reserveAmmo;
+        }
     }
 
     private void SpawnBullet(Vector3 direction)
@@ -109,7 +120,7 @@ public class BulletSpawnScript : MonoBehaviour
         {
             // todo: factor in fire rate upgrade
             //if (Time.time - lastClickTime > currentWeapon.fireRate - (currentWeapon.upgradeStats.fireRate.GetValue() / 100) * currentWeapon.fireRate)
-            if (Time.time - lastClickTime > currentWeapon.fireRate)
+            if (currentWeapon != null && Time.time - lastClickTime > currentWeapon.fireRate)
             {
                 currentWeapon.currentBullets--;
                 lastClickTime = Time.time;
@@ -146,13 +157,11 @@ public class BulletSpawnScript : MonoBehaviour
 
     private void Update()
     {
-        // todo: if interacting with buy station dont shoot
-        //if (!GetComponent<BuyStationScript>().interacting && Time.timeScale == 1.0f)
-        if (Time.timeScale == 1.0f)
+        if (Time.timeScale == 1.0f && !interactingBuyStation)
         {
             UpdateBulletCount();
             checkReloading();
-            if (currentWeapon.currentBullets == 0)
+            if (currentWeapon != null && currentWeapon.currentBullets == 0)
             {
                 Reload();
             }
