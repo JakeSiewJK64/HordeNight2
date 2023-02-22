@@ -1,3 +1,4 @@
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,6 +17,8 @@ public class BuyStationDescription : MonoBehaviour
     [SerializeField]
     private Image weaponTypeIcon;
 
+    private string imagePath = "Images\\";
+
     public void SetInfo(Weapon weapon)
     {
         weaponName.text = weapon.name;
@@ -25,5 +28,18 @@ public class BuyStationDescription : MonoBehaviour
         reloadSpeed.text = weapon.reloadTime.ToString();
         rateOfFire.text = weapon.fireRate.ToString();
         headshotDamage.text = (weapon.damage * 2) + "";
+
+        switch(weapon.weaponType) 
+        {
+            case WeaponType.Sidearm:
+                weaponTypeIcon.sprite = Resources.Load<Sprite>(Path.Combine(imagePath, "handgunammo"));
+                break;
+            case WeaponType.Shotgun:
+                weaponTypeIcon.sprite = Resources.Load<Sprite>(Path.Combine(imagePath, "shotgunshell"));
+                break;
+            default:
+                weaponTypeIcon.sprite = Resources.Load<Sprite>(Path.Combine(imagePath, "rifleammo"));
+                break;
+        }
     }
 }
