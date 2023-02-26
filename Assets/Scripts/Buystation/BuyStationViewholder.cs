@@ -14,6 +14,17 @@ public class BuyStationViewholder : MonoBehaviour
 
     private string id;
 
+    private bool selected;
+
+    public void SetSelected(bool selected)
+    {
+        this.selected = selected;
+        if(selected)
+        {
+            OnBuyButtonPressed();
+        }
+    }
+
     public void SetInfo(ViewholderItems item)
     {
         weaponName.text = item.name;
@@ -35,6 +46,5 @@ public class BuyStationViewholder : MonoBehaviour
     public void OnBuyButtonPressed()
     {
         GetComponentInParent<BuystationScript>().UpdateDescription(selectedWeapon);
-        GetComponentInParent<BuystationScript>().SetSelectedViewholder(selectedWeapon.name + selectedWeapon.price);
     }
 }

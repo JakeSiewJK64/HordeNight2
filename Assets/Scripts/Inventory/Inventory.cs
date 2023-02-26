@@ -53,4 +53,13 @@ public class Inventory
         }
         inventory.Add("Secondary", item);
     }
+    
+    public void SetTertiaryWeapon(Weapon item)
+    {
+        if (inventory.ContainsKey("Tertiary"))
+        {
+            inventory.Remove("Tertiary");
+        }
+        inventory.Add("Tertiary", item);
+    }
 }

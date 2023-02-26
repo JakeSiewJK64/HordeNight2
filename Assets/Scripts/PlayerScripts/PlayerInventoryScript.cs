@@ -19,13 +19,7 @@ public class PlayerInventoryScript : MonoBehaviour
     {
         InitializeInventory();
         currentWeapon = (Weapon)inventory.GetSecondaryWeapon();
-        playerWeapons = new List<Weapon>
-        {
-            (Weapon)inventory.GetPrimaryWeapon(),
-            (Weapon)inventory.GetSecondaryWeapon(),
-            (Weapon)inventory.GetThirdWeapon(),
-        };
-        UpdateWeaponHotbarSprites();
+        UpdateWeapons();
     }
 
     public void SwapWeapon(int index)
@@ -39,18 +33,40 @@ public class PlayerInventoryScript : MonoBehaviour
         return playerWeapons;
     }
 
-    public void UpdateWeaponHotbarSprites()
+    public void UpdateWeapons()
     {
-        for(int i = 0; i < playerWeapons.Count; i++)
+        playerWeapons = new List<Weapon>
+        {
+            (Weapon)inventory.GetPrimaryWeapon(),
+            (Weapon)inventory.GetSecondaryWeapon(),
+            (Weapon)inventory.GetThirdWeapon(),
+        };
+
+        for (int i = 0; i < playerWeapons.Count; i++)
         {
             if (playerWeapons[i] != null)
             {
+                playerWeapons[i].currentBullets = playerWeapons[i].magazineSize;
+                playerWeapons[i].reserveAmmo = playerWeapons[i].startingAmmo;
                 weaponHotbar[i].GetComponent<Image>().gameObject.SetActive(true);
                 weaponHotbar[i].GetComponent<Image>().sprite = Resources.Load<Sprite>(Path.Combine(imagePath, playerWeapons[i].GetWeaponIconPath()));
             } else
             {
                 weaponHotbar[i].GetComponent<Image>().gameObject.SetActive(false);
             }
+        }
+
+        switch (currentWeapon.weaponHolding)
+        {
+            case WeaponHolding.PRIMARY:
+                SwapWeapon(0);
+                break;
+            case WeaponHolding.SECONDARY:
+                SwapWeapon(1);
+                break;
+            default:
+                SwapWeapon(2);
+                break;
         }
     }
 
