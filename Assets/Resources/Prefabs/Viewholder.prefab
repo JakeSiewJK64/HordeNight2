@@ -1371,7 +1371,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 0.392}
+  m_Color: {r: 1, g: 0.41568628, b: 0.07450981, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1463,7 +1463,6 @@ MonoBehaviour:
   price: {fileID: 3648984791390344477}
   reloadSpeed: {fileID: 5751942382549983584}
   weaponProfile: {fileID: 5894794881530451629}
-  descriptionViewholder: {fileID: 3491578867860778831, guid: 7e24ab273c2f0474bab112dae407374f, type: 3}
 --- !u!1 &8543679274560071360
 GameObject:
   m_ObjectHideFlags: 0

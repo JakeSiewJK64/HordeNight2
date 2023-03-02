@@ -21,7 +21,7 @@ public class BuystationScript : MonoBehaviour
     [SerializeField]
     private Transform platform;
     
-    private Color selectedColor = Color.red;
+    private Color selectedColor = new Color(1, 0.427451f, 0.0627451f, 1);
     private Color defaultColor = Color.clear;
     private int selectedItemIndex = 0;
 

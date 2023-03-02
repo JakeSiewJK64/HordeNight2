@@ -1,5 +1,7 @@
 using System.IO;
+using System.Threading;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BulletSpawnScript : MonoBehaviour
@@ -98,13 +100,14 @@ public class BulletSpawnScript : MonoBehaviour
         }
     }
 
-    private void SpawnBullet(Vector3 direction)
+    private GameObject SpawnBullet(Vector3 direction, Quaternion rotation)
     {
-        GameObject bulletInstance = Instantiate(bulletPrefab, bulletSpawn.position, Quaternion.identity);
+        GameObject bulletInstance = Instantiate(bulletPrefab, bulletSpawn.position, rotation);
         bulletInstance.GetComponent<Rigidbody>().AddForce(direction.normalized * bulletSpeed);
         Destroy(bulletInstance, bulletLifetime);
         lastClickTime = Time.time;
         bulletInstance.GetComponent<BulletScript>().SetOriginPlayer(gameObject);
+        return bulletInstance;
     }
 
     private void Shoot()
@@ -131,17 +134,21 @@ public class BulletSpawnScript : MonoBehaviour
 
                 if (currentWeapon.weaponType != WeaponType.Shotgun)
                 {
-                    SpawnBullet(direction);
+                    SpawnBullet(direction, Quaternion.identity);
                 }
                 else
                 {
                     for (int i = 0; i < 12; i++)
                     {
-                        // Calculate the spread angle
-                        float spreadAngle = Random.Range(-spreadValue, spreadValue);
-                        // Rotate the direction vector by the spread angle
-                        direction = Quaternion.Euler(spreadAngle / 2, spreadAngle, 0) * direction;
-                        SpawnBullet(direction);
+                        Vector3 spread = Vector3.zero;
+                        spread += cameraTransform.transform.up * Random.Range(-1, 1); // add random up or down (because random can get negative too)
+                        spread += cameraTransform.transform.right * Random.Range(-1, 1); // add random left or right
+
+                        // Using random up and right values will lead to a square spray pattern. If we normalize this vector, we'll get the spread direction, but as a circle.
+                        // Since the radius is always 1 then (after normalization), we need another random call. 
+                        direction += spread * Random.Range(spreadValue, spreadValue);
+
+                        SpawnBullet(direction, Quaternion.identity);
                     }
                 }
             }
