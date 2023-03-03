@@ -153,6 +153,9 @@ public class BuystationScript : MonoBehaviour
     {
         if(selectedItem != null && Input.GetKeyDown(KeyCode.E) && interacting && player.GetComponent<PlayerPointsScript>().GetPoints() >= selectedItem.price)
         {
+            selectedItem.magazineSize = selectedItem.magazineSize;
+            selectedItem.reserveAmmo = selectedItem.startingAmmo;
+
             if (selectedItem.weaponHolding == WeaponHolding.PRIMARY)
             {
                 player.GetComponent<PlayerInventoryScript>().GetPlayerInventory().SetPrimaryWeapon(selectedItem);

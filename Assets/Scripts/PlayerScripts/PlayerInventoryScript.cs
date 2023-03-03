@@ -46,8 +46,6 @@ public class PlayerInventoryScript : MonoBehaviour
         {
             if (playerWeapons[i] != null)
             {
-                playerWeapons[i].currentBullets = playerWeapons[i].magazineSize;
-                playerWeapons[i].reserveAmmo = playerWeapons[i].startingAmmo;
                 weaponHotbar[i].GetComponent<Image>().gameObject.SetActive(true);
                 weaponHotbar[i].GetComponent<Image>().sprite = Resources.Load<Sprite>(Path.Combine(imagePath, playerWeapons[i].GetWeaponIconPath()));
             } else
