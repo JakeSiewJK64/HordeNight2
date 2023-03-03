@@ -112,7 +112,7 @@ public class BulletSpawnScript : MonoBehaviour
         {
             // todo: factor in fire rate upgrade
             //if (Time.time - lastClickTime > currentWeapon.fireRate - (currentWeapon.upgradeStats.fireRate.GetValue() / 100) * currentWeapon.fireRate)
-            if (currentWeapon != null && Time.time - lastClickTime > currentWeapon.fireRate)
+            if (currentWeapon != null && Time.time - lastClickTime > currentWeapon.fireRate && !GetComponent<PlayerMovementScript>().GetRunning() && !GetComponent<PlayerMovementScript>().GetSliding())
             {
                 currentWeapon.currentBullets--;
                 lastClickTime = Time.time;

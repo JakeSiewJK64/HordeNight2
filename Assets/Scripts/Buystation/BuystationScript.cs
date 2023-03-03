@@ -89,6 +89,7 @@ public class BuystationScript : MonoBehaviour
                 interacting = false;
                 player.gameObject.GetComponent<PlayerBuyStationInteraction>().SetInteracting(false);
                 descriptionViewholder.SetActive(false);
+                selectedItem = null;
                 player.gameObject.GetComponent<InteractScript>().SetTM("");
             } else
             {

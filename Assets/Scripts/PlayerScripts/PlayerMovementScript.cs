@@ -25,6 +25,7 @@ public class PlayerMovementScript : MonoBehaviour
     private void AnimatePlayer()
     {
         animator.SetBool("PistolWalking", WASDCheck());
+        animator.SetBool("Running", isRunning);
     }
 
     private void Update()
@@ -38,13 +39,18 @@ public class PlayerMovementScript : MonoBehaviour
             playerVelocity.y = 0f;
         }
 
+        isRunning = Input.GetKey(KeyCode.LeftShift);
+
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
         Vector3 moveDirection = 
             horizontal * cameraTransform.right.normalized + vertical * cameraTransform.forward.normalized;
+
         moveDirection.y = 0;
+        
         characterController.Move(moveDirection * (Input.GetKey(KeyCode.LeftShift) ? moveSpeed * 2 : moveSpeed) * Time.deltaTime);
+        
         if(WASDCheck() || Input.GetMouseButton(1) || Input.GetMouseButton(0))
         {
             // todo: rotate player body
@@ -78,6 +84,7 @@ public class PlayerMovementScript : MonoBehaviour
             {
                 // transition to running animation
                 animator.Play("Idle", 0, 0.0f);
+                rolling = false;
             }
         }
         else
@@ -93,5 +100,15 @@ public class PlayerMovementScript : MonoBehaviour
                 lastSlideTime = Time.time;
             }
         }
+    }
+
+    public bool GetRunning()
+    {
+        return isRunning;
+    }
+
+    public bool GetSliding()
+    {
+        return rolling;
     }
 }
