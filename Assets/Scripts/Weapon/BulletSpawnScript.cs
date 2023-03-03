@@ -1,7 +1,5 @@
 using System.IO;
-using System.Threading;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BulletSpawnScript : MonoBehaviour
@@ -34,9 +32,7 @@ public class BulletSpawnScript : MonoBehaviour
     public Inventory inventory;
 
     [SerializeField]
-    private float spreadValue = 2f;
-
-    private float bulletSpeed = 1f;
+    private float circularSpread = 1f, bulletSpeed = 1f;
 
     private void Start()
     {
@@ -141,12 +137,13 @@ public class BulletSpawnScript : MonoBehaviour
                     for (int i = 0; i < 12; i++)
                     {
                         Vector3 spread = Vector3.zero;
-                        spread += cameraTransform.transform.up * Random.Range(-1, 1); // add random up or down (because random can get negative too)
-                        spread += cameraTransform.transform.right * Random.Range(-1, 1); // add random left or right
+                        spread += cameraTransform.transform.up * Random.Range(-circularSpread, circularSpread); // add random up or down (because random can get negative too)
+                        spread += cameraTransform.transform.right * Random.Range(-circularSpread, circularSpread); // add random left or right
 
                         // Using random up and right values will lead to a square spray pattern. If we normalize this vector, we'll get the spread direction, but as a circle.
                         // Since the radius is always 1 then (after normalization), we need another random call. 
-                        direction += spread * Random.Range(spreadValue, spreadValue);
+
+                        direction += spread;
 
                         SpawnBullet(direction, Quaternion.identity);
                     }

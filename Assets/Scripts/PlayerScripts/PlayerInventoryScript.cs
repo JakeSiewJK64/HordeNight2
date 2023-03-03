@@ -63,7 +63,6 @@ public class PlayerInventoryScript : MonoBehaviour
                 SwapWeapon(1);
                 break;
             default:
-                SwapWeapon(2);
                 break;
         }
     }
