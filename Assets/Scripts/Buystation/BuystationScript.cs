@@ -26,8 +26,7 @@ public class BuystationScript : MonoBehaviour
     private int selectedItemIndex = 0;
 
     private GameObject player;
-    private string imagePath = "Images\\Weapons\\";
-    private bool interacting = false;
+    private string imagePath = "Images\\Weapons\\";    
     private List<Weapon> weapons = new List<Weapon>();
 
     private Weapon selectedItem = null;
@@ -85,20 +84,19 @@ public class BuystationScript : MonoBehaviour
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
-                UI.SetActive(false);
-                interacting = false;
+                UI.SetActive(false);                
                 player.gameObject.GetComponent<PlayerBuyStationInteraction>().SetInteracting(false);
                 descriptionViewholder.SetActive(false);
                 selectedItem = null;
                 player.gameObject.GetComponent<InteractScript>().SetTM("");
+                player = null;
             } else
             {
                 if(Input.GetKey(KeyCode.F)) 
                 { 
                     Cursor.lockState = CursorLockMode.Confined;
                     Cursor.visible = true;
-                    UI.SetActive(true);
-                    interacting = true;
+                    UI.SetActive(true);                    
                     player.gameObject.GetComponent<PlayerBuyStationInteraction>().SetInteracting(true);
                     playerPoints.text = player.GetComponent<PlayerPointsScript>().GetPoints() + " PTS";
                     player.gameObject.GetComponent<InteractScript>().SetTM("");
@@ -133,7 +131,7 @@ public class BuystationScript : MonoBehaviour
         if(collision.gameObject.tag == "Player")
         {
             player = collision.gameObject;
-            if (!interacting)
+            if (!player.GetComponent<PlayerBuyStationInteraction>().GetInteracting())
             {
                 collision
                     .gameObject
@@ -152,7 +150,7 @@ public class BuystationScript : MonoBehaviour
 
     private void CheckBuyInput()
     {
-        if(selectedItem != null && Input.GetKeyDown(KeyCode.E) && interacting && player.GetComponent<PlayerPointsScript>().GetPoints() >= selectedItem.price)
+        if(selectedItem != null && Input.GetKeyDown(KeyCode.E) && player.GetComponent<PlayerBuyStationInteraction>().GetInteracting() && player.GetComponent<PlayerPointsScript>().GetPoints() >= selectedItem.price)
         {
             selectedItem.magazineSize = selectedItem.magazineSize;
             selectedItem.reserveAmmo = selectedItem.startingAmmo;
