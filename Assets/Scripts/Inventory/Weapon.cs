@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 
 public class Weapon : Item
 {
+    public Dictionary<string, int> upgradeModuleHash { get; set; }
     public WeaponType weaponType { get; set; }
     public WeaponHolding weaponHolding { get; set; }
     public float reserveAmmo { get; set; }
@@ -48,6 +50,20 @@ public class Weapon : Item
         this.reloadingSoundPath = reloadingSoundPath;
         this.weaponIconPath = weaponIconPath;
         this.weaponPrefabPath = weaponPrefabPath;
+        upgradeModuleHash = new Dictionary<string, int> {
+            { "DMG", 1 },
+            { "REL", 1 },
+            { "MAG", 1 },
+            { "ROF", 1 },
+        };
+    }
+
+    public void LevelUpModule(string tag)
+    {
+        if(upgradeModuleHash.ContainsKey(tag))
+        {
+            upgradeModuleHash[tag] += 1;
+        }
     }
 
     public void ResetReserveAmmo()

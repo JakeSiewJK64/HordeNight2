@@ -7,10 +7,10 @@ using UnityEngine.UI;
 public class UpgradeStationScript : MonoBehaviour
 {
     [SerializeField]
-    private GameObject UI, viewholder;
+    private GameObject UI, viewholder, upgradeDescViewholder;
 
     [SerializeField]
-    private ScrollRect scrollArea;
+    private ScrollRect scrollArea, upgradeDescScrollArea;
 
     [SerializeField]
     private TextMeshProUGUI playerPoints;
@@ -21,6 +21,7 @@ public class UpgradeStationScript : MonoBehaviour
     private Color selectedColor = new Color(1, 0.427451f, 0.0627451f, 1);
     private Color defaultColor = Color.clear;
     private int selectedItemIndex = 0;
+    private int upgradeSelectedItemIndex = 0;
 
     private GameObject player;
     private string imagePath = "Images\\Weapons\\";
@@ -28,6 +29,7 @@ public class UpgradeStationScript : MonoBehaviour
 
     private Weapon selectedItem = null;
 
+    private bool selectedUpgradeItem = false;
 
     private void Start()
     {
@@ -37,6 +39,24 @@ public class UpgradeStationScript : MonoBehaviour
 
     void SetSelected(int index)
     {
+        if(selectedUpgradeItem)
+        {
+            for (int i = 0; i < upgradeDescScrollArea.content.childCount; i++)
+            {
+                if (i == index)
+                {
+                    upgradeDescScrollArea.content.GetChild(i).GetComponent<UpgradeStationDesc>().SetSelected(true);
+                    upgradeDescScrollArea.content.GetChild(i).GetComponent<Image>().color = selectedColor;
+                }
+                else
+                {
+                    upgradeDescScrollArea.content.GetChild(i).GetComponent<UpgradeStationViewholder>().SetSelected(false);
+                    upgradeDescScrollArea.content.GetChild(i).GetComponent<Image>().color = defaultColor;
+                }
+            }
+            return;
+        }
+
         for (int i = 0; i < scrollArea.content.childCount; i++)
         {
             if (i == index)
@@ -52,62 +72,100 @@ public class UpgradeStationScript : MonoBehaviour
         }
     }
 
+    private void ClearUpgradeDesc()
+    {
+        foreach (Transform child in upgradeDescScrollArea.content)
+        {
+            if (child != null)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+    }
+
+    private void CheckPlayerInteraction()
+    {
+        if (Vector3.Distance(transform.position, player.transform.position) > 5)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            UI.SetActive(false);
+            player.gameObject.GetComponent<PlayerBuyStationInteraction>().SetInteracting(false);
+            player.gameObject.GetComponent<InteractScript>().SetTM("");
+            descriptionViewholder.SetActive(false);
+            selectedItem = null;
+            selectedUpgradeItem = false;
+            weapons = new List<Weapon>() { };
+            player = null;
+
+            foreach (Transform child in scrollArea.content)
+            {
+                if (child != null)
+                {
+                    Destroy(child.gameObject);
+                }
+            }
+
+            ClearUpgradeDesc();
+        }
+        else
+        {
+            if (Input.GetKey(KeyCode.F))
+            {
+                Cursor.lockState = CursorLockMode.Confined;
+                Cursor.visible = true;
+                UI.SetActive(true);
+                ListPlayerWeapons();
+                player.gameObject.GetComponent<PlayerBuyStationInteraction>().SetInteracting(true);
+                playerPoints.text = player.GetComponent<PlayerPointsScript>().GetPoints() + " PTS";
+                player.gameObject.GetComponent<InteractScript>().SetTM("");
+            }
+        }
+    }
+
     private void Update()
     {
         if (player)
         {
-            CheckBuyInput();
-
-            // todo: detect arrow keys
-            if (Input.GetKeyDown(KeyCode.DownArrow))
+            if(selectedItem != null)
             {
-                selectedItemIndex = Mathf.Min(selectedItemIndex + 1, scrollArea.content.childCount - 1);
-                SetSelected(selectedItemIndex);
-            }
-            else if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                selectedItemIndex = Mathf.Max(selectedItemIndex - 1, 0);
-                SetSelected(selectedItemIndex);
+                CheckBuyInput();
             }
 
-            // scroll based on index
-            int index = selectedItemIndex;
-            float normalizedPosition = (float)index / (scrollArea.content.childCount - 1);
-            scrollArea.normalizedPosition = new Vector2(0, 1 - normalizedPosition);
+            if(selectedUpgradeItem)
+            {
+                ControlScrollArea(upgradeDescScrollArea);
+            } else
+            {
+                ControlScrollArea(scrollArea);
+            }
 
-            if (Vector3.Distance(transform.position, player.transform.position) > 5)
+            if (Input.GetKey(KeyCode.Escape))
             {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-                UI.SetActive(false);
-                player.gameObject.GetComponent<PlayerBuyStationInteraction>().SetInteracting(false);
-                player.gameObject.GetComponent<InteractScript>().SetTM("");
-                descriptionViewholder.SetActive(false);
-                selectedItem = null;
-                weapons = new List<Weapon>() { };
-                player = null;
-                foreach (Transform child in scrollArea.content)
-                {
-                    if (child != null)
-                    {
-                        Destroy(child.gameObject);
-                    }
-                }
+                selectedUpgradeItem = false;
             }
-            else
-            {
-                if (Input.GetKey(KeyCode.F))
-                {
-                    Cursor.lockState = CursorLockMode.Confined;
-                    Cursor.visible = true;
-                    UI.SetActive(true);
-                    ListPlayerWeapons();
-                    player.gameObject.GetComponent<PlayerBuyStationInteraction>().SetInteracting(true);
-                    playerPoints.text = player.GetComponent<PlayerPointsScript>().GetPoints() + " PTS";
-                    player.gameObject.GetComponent<InteractScript>().SetTM("");
-                }
-            }
+
+            CheckPlayerInteraction();
         }
+    }
+
+    private void ControlScrollArea(ScrollRect scrollArea)
+    {
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            selectedItemIndex = Mathf.Min(selectedItemIndex + 1, scrollArea.content.childCount - 1);
+            SetSelected(selectedItemIndex);
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            selectedItemIndex = Mathf.Max(selectedItemIndex - 1, 0);
+            SetSelected(selectedItemIndex);
+        }
+
+        // scroll based on index
+        int index = selectedItemIndex;
+        float normalizedPosition = (float)index / (scrollArea.content.childCount - 1);
+        scrollArea.normalizedPosition = new Vector2(0, 1 - normalizedPosition);
     }
 
     private void InitializeViewholders()
@@ -150,29 +208,31 @@ public class UpgradeStationScript : MonoBehaviour
 
     public void UpdateDescription(Weapon weapon)
     {
+        ClearUpgradeDesc();
         descriptionViewholder.SetActive(true);
-        //descriptionViewholder.GetComponent<BuyStationDescription>().SetInfo(weapon);
+        foreach (var upgrade in weapon.upgradeModuleHash)
+        {
+            GameObject newItem = Instantiate(upgradeDescViewholder, upgradeDescScrollArea.content);
+            if (newItem.TryGetComponent(out UpgradeStationDesc viewholderItem))
+            {
+                viewholderItem.SetInfo(upgrade.Key, weapon);
+            }
+        }
         selectedItem = weapon;
     }
 
     private void CheckBuyInput()
     {
-        if (selectedItem != null && Input.GetKeyDown(KeyCode.E) && player.GetComponent<PlayerBuyStationInteraction>().GetInteracting() && player.GetComponent<PlayerPointsScript>().GetPoints() >= selectedItem.price)
+        if 
+        (
+            Input.GetKeyDown(KeyCode.E) && 
+            player.GetComponent<PlayerBuyStationInteraction>().GetInteracting() && 
+            player.GetComponent<PlayerPointsScript>().GetPoints() >= selectedItem.price
+        )
         {
-            selectedItem.magazineSize = selectedItem.magazineSize;
-            selectedItem.reserveAmmo = selectedItem.startingAmmo;
-
-            if (selectedItem.weaponHolding == WeaponHolding.PRIMARY)
-            {
-                player.GetComponent<PlayerInventoryScript>().GetPlayerInventory().SetPrimaryWeapon(selectedItem);
-            }
-            else
-            {
-                player.GetComponent<PlayerInventoryScript>().GetPlayerInventory().SetSecondaryWeapon(selectedItem);
-            }
-            player.GetComponent<AudioSource>().PlayOneShot(Resources.Load<AudioClip>("Sound\\purchase"));
-            player.GetComponent<PlayerInventoryScript>().UpdateWeapons();
-            player.GetComponent<PlayerPointsScript>().DeductPoints(selectedItem.price);
+            // todo: purchase upgrade
+            selectedUpgradeItem = true;
+            ControlScrollArea(upgradeDescScrollArea);
         }
     }
 
