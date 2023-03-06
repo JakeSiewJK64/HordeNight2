@@ -37,11 +37,6 @@ public class UpgradeStationViewholder : MonoBehaviour
         id = item.name + item.points;
     }
 
-    public string GetId()
-    {
-        return id;
-    }
-
     public void OnBuyButtonPressed()
     {
         GetComponentInParent<UpgradeStationScript>().UpdateDescription(selectedWeapon);

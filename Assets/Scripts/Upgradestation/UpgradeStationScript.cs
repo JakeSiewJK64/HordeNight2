@@ -20,6 +20,7 @@ public class UpgradeStationScript : MonoBehaviour
 
     private Color selectedColor = new Color(1, 0.427451f, 0.0627451f, 1);
     private Color defaultColor = Color.clear;
+
     private int selectedItemIndex = 0;
     private int upgradeSelectedItemIndex = 0;
 
@@ -37,21 +38,21 @@ public class UpgradeStationScript : MonoBehaviour
         descriptionViewholder.SetActive(false);
     }
 
-    void SetSelected(int index)
+    void SetSelected(int index, ScrollRect scrollArea)
     {
         if(selectedUpgradeItem)
         {
-            for (int i = 0; i < upgradeDescScrollArea.content.childCount; i++)
+            for (int i = 0; i < scrollArea.content.childCount; i++)
             {
                 if (i == index)
                 {
-                    upgradeDescScrollArea.content.GetChild(i).GetComponent<UpgradeStationDesc>().SetSelected(true);
-                    upgradeDescScrollArea.content.GetChild(i).GetComponent<Image>().color = selectedColor;
+                    scrollArea.content.GetChild(i).GetComponent<UpgradeStationDesc>().SetSelected(true);
+                    scrollArea.content.GetChild(i).GetComponent<Image>().color = selectedColor;
                 }
                 else
                 {
-                    upgradeDescScrollArea.content.GetChild(i).GetComponent<UpgradeStationViewholder>().SetSelected(false);
-                    upgradeDescScrollArea.content.GetChild(i).GetComponent<Image>().color = defaultColor;
+                    scrollArea.content.GetChild(i).GetComponent<UpgradeStationDesc>().SetSelected(false);
+                    scrollArea.content.GetChild(i).GetComponent<Image>().color = defaultColor;
                 }
             }
             return;
@@ -134,10 +135,10 @@ public class UpgradeStationScript : MonoBehaviour
 
             if(selectedUpgradeItem)
             {
-                ControlScrollArea(upgradeDescScrollArea);
+                ControlScrollArea(upgradeDescScrollArea, upgradeSelectedItemIndex);
             } else
             {
-                ControlScrollArea(scrollArea);
+                ControlScrollArea(scrollArea, selectedItemIndex);
             }
 
             if (Input.GetKey(KeyCode.Escape))
@@ -149,21 +150,22 @@ public class UpgradeStationScript : MonoBehaviour
         }
     }
 
-    private void ControlScrollArea(ScrollRect scrollArea)
+    private void ControlScrollArea(ScrollRect scrollArea, int selectedItemIndex)
     {
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             selectedItemIndex = Mathf.Min(selectedItemIndex + 1, scrollArea.content.childCount - 1);
-            SetSelected(selectedItemIndex);
+            SetSelected(selectedItemIndex, scrollArea);
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             selectedItemIndex = Mathf.Max(selectedItemIndex - 1, 0);
-            SetSelected(selectedItemIndex);
+            SetSelected(selectedItemIndex, scrollArea);
         }
 
         // scroll based on index
         int index = selectedItemIndex;
+        upgradeSelectedItemIndex = index;
         float normalizedPosition = (float)index / (scrollArea.content.childCount - 1);
         scrollArea.normalizedPosition = new Vector2(0, 1 - normalizedPosition);
     }
@@ -226,13 +228,26 @@ public class UpgradeStationScript : MonoBehaviour
         if 
         (
             Input.GetKeyDown(KeyCode.E) && 
-            player.GetComponent<PlayerBuyStationInteraction>().GetInteracting() && 
-            player.GetComponent<PlayerPointsScript>().GetPoints() >= selectedItem.price
+            player.GetComponent<PlayerBuyStationInteraction>().GetInteracting()
         )
         {
-            // todo: purchase upgrade
-            selectedUpgradeItem = true;
-            ControlScrollArea(upgradeDescScrollArea);
+            if (!selectedUpgradeItem)
+            {
+                selectedUpgradeItem = true;
+                upgradeSelectedItemIndex = 0;
+            }
+            else
+            {
+                UpgradeStationDesc selectedUpgrade = upgradeDescScrollArea.content.GetChild(upgradeSelectedItemIndex).GetComponent<UpgradeStationDesc>();
+                
+                if(player.GetComponent<PlayerPointsScript>().GetPoints() >= selectedUpgrade.GetPrice())
+                {
+                    player.GetComponent<AudioSource>().PlayOneShot(Resources.Load<AudioClip>("Sound\\upgrade"));
+                    player.GetComponent<PlayerPointsScript>().DeductPoints(selectedUpgrade.GetPrice());
+                    selectedItem.LevelUpModule(selectedUpgrade.GetTag());
+                    selectedUpgrade.SetInfo(selectedUpgrade.GetTag(), selectedItem);
+                }
+            }
         }
     }
 

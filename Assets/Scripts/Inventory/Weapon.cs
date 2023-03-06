@@ -60,7 +60,7 @@ public class Weapon : Item
 
     public void LevelUpModule(string tag)
     {
-        if(upgradeModuleHash.ContainsKey(tag))
+        if(upgradeModuleHash.ContainsKey(tag) && upgradeModuleHash[tag] < 5)
         {
             upgradeModuleHash[tag] += 1;
         }
