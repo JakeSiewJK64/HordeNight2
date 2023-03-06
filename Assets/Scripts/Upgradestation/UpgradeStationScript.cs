@@ -144,6 +144,7 @@ public class UpgradeStationScript : MonoBehaviour
             if (Input.GetKey(KeyCode.Escape))
             {
                 selectedUpgradeItem = false;
+                descriptionViewholder.SetActive(false);
             }
 
             CheckPlayerInteraction();
@@ -233,8 +234,10 @@ public class UpgradeStationScript : MonoBehaviour
         {
             if (!selectedUpgradeItem)
             {
+                descriptionViewholder.SetActive(true);
                 selectedUpgradeItem = true;
                 upgradeSelectedItemIndex = 0;
+                SetSelected(upgradeSelectedItemIndex, upgradeDescScrollArea);
             }
             else
             {
