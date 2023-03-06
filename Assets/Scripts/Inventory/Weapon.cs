@@ -51,10 +51,10 @@ public class Weapon : Item
         this.weaponIconPath = weaponIconPath;
         this.weaponPrefabPath = weaponPrefabPath;
         upgradeModuleHash = new Dictionary<string, int> {
-            { "DMG", 1 },
-            { "REL", 1 },
-            { "MAG", 1 },
-            { "ROF", 1 },
+            { "DMG", 0 },
+            { "REL", 0 },
+            { "MAG", 0 },
+            { "ROF", 0 },
         };
     }
 
@@ -73,9 +73,24 @@ public class Weapon : Item
 
     public int GetMagazineSize()
     {
-        return (int)magazineSize;
+        return (int)((int) magazineSize + (int) magazineSize * (upgradeModuleHash["MAG"] * .25f));
     }
 
+    public float GetFireRate()
+    {
+        return fireRate - fireRate * (upgradeModuleHash["ROF"] * .0625f);
+    }
+
+    public float GetDamage()
+    {
+        return damage + damage * (upgradeModuleHash["DMG"] * .25f);
+    }
+
+    public float GetReloadSpeed()
+    {
+        return reloadTime - reloadTime * (upgradeModuleHash["REL"] * .03125f);
+    }
+    
     public string GetWeaponIconPath()
     {
         return weaponIconPath;

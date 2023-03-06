@@ -40,17 +40,17 @@ public class UpgradeStationDesc : MonoBehaviour
         {
             level.text = "" + weapon.upgradeModuleHash["DMG"];
             upgradeDesc.text = 
-                weapon.damage + " >>> " + (weapon.damage + weapon.damage * (weapon.upgradeModuleHash["DMG"] * .25f));
+                weapon.GetDamage() + " >>> " + (weapon.GetDamage() + weapon.GetDamage() * (weapon.upgradeModuleHash["DMG"] * .25f));
         } else if(name.Equals("MAG"))
         {
             level.text = "" + weapon.upgradeModuleHash["MAG"];
             upgradeDesc.text =
-                weapon.magazineSize+ " >>> " + (weapon.magazineSize + weapon.magazineSize * (weapon.upgradeModuleHash["MAG"] * .25f));
+                weapon.GetMagazineSize() + " >>> " + (weapon.magazineSize + weapon.magazineSize * (weapon.upgradeModuleHash["MAG"] * .25f));
         } else if(name.Equals("ROF"))
         {
             level.text = "" + weapon.upgradeModuleHash["ROF"];
             upgradeDesc.text =
-                weapon.fireRate + " >>> " + (weapon.fireRate + weapon.fireRate * (weapon.upgradeModuleHash["ROF"] * .25f) + "s");
+                weapon.GetFireRate() + "s >>> " + (weapon.GetFireRate() - weapon.GetFireRate() * (weapon.upgradeModuleHash["ROF"] * .25f) + "s");
         } else
         {
             level.text = "" + weapon.upgradeModuleHash["REL"];

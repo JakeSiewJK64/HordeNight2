@@ -243,11 +243,18 @@ public class UpgradeStationScript : MonoBehaviour
             {
                 UpgradeStationDesc selectedUpgrade = upgradeDescScrollArea.content.GetChild(upgradeSelectedItemIndex).GetComponent<UpgradeStationDesc>();
                 
-                if(player.GetComponent<PlayerPointsScript>().GetPoints() >= selectedUpgrade.GetPrice())
+                if(
+                    player.GetComponent<PlayerPointsScript>().GetPoints() >= selectedUpgrade.GetPrice() &&
+                    selectedItem.upgradeModuleHash[selectedUpgrade.GetTag()] < 5
+                )
                 {
                     player.GetComponent<AudioSource>().PlayOneShot(Resources.Load<AudioClip>("Sound\\upgrade"));
                     player.GetComponent<PlayerPointsScript>().DeductPoints(selectedUpgrade.GetPrice());
+                    
                     selectedItem.LevelUpModule(selectedUpgrade.GetTag());
+                    selectedItem.currentBullets = selectedItem.GetMagazineSize();
+                    selectedItem.reserveAmmo = selectedItem.startingAmmo;
+                    
                     selectedUpgrade.SetInfo(selectedUpgrade.GetTag(), selectedItem);
                 }
             }

@@ -71,8 +71,7 @@ public class BulletSpawnScript : MonoBehaviour
             Reload();
         }
 
-        // todo: factor in reload speed upgrade stats
-        if (currentWeapon != null && Time.time - lastClickTime > currentWeapon.reloadTime)
+        if (currentWeapon != null && Time.time - lastClickTime > currentWeapon.GetReloadSpeed())
         {
             reloading = false;
         }
@@ -110,20 +109,18 @@ public class BulletSpawnScript : MonoBehaviour
     {
         if (Input.GetMouseButton(0) && !reloading)
         {
-            // todo: factor in fire rate upgrade
-            //if (Time.time - lastClickTime > currentWeapon.fireRate - (currentWeapon.upgradeStats.fireRate.GetValue() / 100) * currentWeapon.fireRate)
-            if (currentWeapon != null && Time.time - lastClickTime > currentWeapon.fireRate && !GetComponent<PlayerMovementScript>().GetRunning() && !GetComponent<PlayerMovementScript>().GetSliding())
+            if (
+                currentWeapon != null && 
+                Time.time - lastClickTime > currentWeapon.GetFireRate() && 
+                !GetComponent<PlayerMovementScript>().GetRunning() && 
+                !GetComponent<PlayerMovementScript>().GetSliding()
+            )
             {
                 currentWeapon.currentBullets--;
                 lastClickTime = Time.time;
 
-                // todo: factor in upgrade stats
-                //bulletPrefab.GetComponent<BulletScript>().damage =
-                //    (float)(currentWeapon.damage + (currentWeapon.damage * (int)currentWeapon.weaponType * currentWeapon.upgradeStats.damage.GetValue()));
+                bulletPrefab.GetComponent<BulletScript>().damage = currentWeapon.GetDamage();
                 
-                bulletPrefab.GetComponent<BulletScript>().damage = currentWeapon.damage;
-
-                // play shoot sound
                 PlayWeaponSound(shootingSound);
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 Vector3 direction = (ray.origin + ray.direction * 100) - bulletSpawn.position;
