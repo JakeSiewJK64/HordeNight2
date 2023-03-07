@@ -14,7 +14,12 @@ public class PlayerHealthbar : MonoBehaviour
 
     void Start()
     {
-        player = new Player(100, 100, 5, 3f);
+        player = new Player(
+            health: 100, 
+            stamina: 100, 
+            damage: 5, 
+            healthRegeneration: 3f
+        );
     }
 
     public void TakeDamage(float damage)

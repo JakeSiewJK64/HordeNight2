@@ -1,25 +1,45 @@
+using System.Collections.Generic;
+
 public class Player : Character
 {
     public float stamina { get; set; }
     public bool immune { get; set; }
-    public bool dead { get; set; }
     public float healthRegeneration { get; set; }
+    public float playerSpeed { get; set; }
 
+    public Dictionary<string, int> upgradeModule { get; set; }
 
     public Player(float health, float stamina, float damage, float healthRegeneration) : base(health, damage)
     {
         this.stamina = stamina;
         this.healthRegeneration = healthRegeneration;
+        playerSpeed = 5f;
+        upgradeModule = new Dictionary<string, int>()
+        {
+            { "MOVEMENT_SPEED", 0 },
+            { "HEALTH", 0 },
+            { "HEALTH_REGEN_SPEED", 0 },
+        };
     }
 
-    public void ReduceStamina(float amount)
+    public void LevelUpModule(string tag)
     {
-        stamina -= amount;
+        upgradeModule[tag]++;
+    } 
+
+    public float GetHealth()
+    {
+        return health + health * (upgradeModule["HEALTH"] * .25f);
     }
 
-    public void GainStamina(float amount)
+    public float GetSpeed()
     {
-        stamina += amount;
+        return playerSpeed + playerSpeed * (upgradeModule["MOVEMENT_SPEED"] * .25f);
+    }
+
+    public float GetHealthRegenSpeed()
+    {
+        return healthRegeneration + healthRegeneration * (upgradeModule["HEALTH_REGEN_SPEED"] * .25f);
     }
 
     public void TakeDamage(float damage)

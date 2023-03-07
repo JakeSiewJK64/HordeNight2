@@ -3,7 +3,6 @@ using UnityEngine;
 public class PlayerMovementScript : MonoBehaviour
 {
     private Transform cameraTransform;
-    private float moveSpeed = 5f;
     private CharacterController characterController;
     private float rotationSpeed = 5f;
     private Vector3 playerVelocity;
@@ -48,8 +47,12 @@ public class PlayerMovementScript : MonoBehaviour
             horizontal * cameraTransform.right.normalized + vertical * cameraTransform.forward.normalized;
 
         moveDirection.y = 0;
-        
-        characterController.Move(moveDirection * (Input.GetKey(KeyCode.LeftShift) ? moveSpeed * 2 : moveSpeed) * Time.deltaTime);
+
+        characterController.Move(moveDirection * (
+            Input.GetKey(KeyCode.LeftShift) ?
+            GetComponent<PlayerHealthbar>().player.GetSpeed() * 2 :
+            GetComponent<PlayerHealthbar>().player.GetSpeed()) * Time.deltaTime
+        );
         
         if(WASDCheck() || Input.GetMouseButton(1) || Input.GetMouseButton(0))
         {
