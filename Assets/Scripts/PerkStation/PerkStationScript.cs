@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -109,24 +110,19 @@ public class PerkStationScript : MonoBehaviour
 
     private void CheckBuyInput()
     {
-        if (Input.GetKeyDown(KeyCode.E) && player.GetComponent<PlayerBuyStationInteraction>().GetInteracting())
+        if (player != null && Input.GetKeyDown(KeyCode.E) && player.GetComponent<PlayerBuyStationInteraction>().GetInteracting())
         {
-            player.GetComponent<PlayerHealthbar>().player.LevelUpModule(scrollArea.content.GetChild(globalIndex).GetComponent<PerkStationViewholder>().GetUpgrade().Key);
-            scrollArea.content.GetChild(globalIndex).GetComponent<PerkStationViewholder>().SetInfo
-                (
-                    scrollArea.content.GetChild(globalIndex).GetComponent<PerkStationViewholder>().GetUpgrade(),
-                    player.GetComponent<PlayerHealthbar>().player
-                );
-        }
-    }
+            KeyValuePair<string, int> upgrade = scrollArea.content.GetChild(globalIndex).GetComponent<PerkStationViewholder>().GetUpgrade();
 
-    private void ClearScrollContent()
-    {
-        foreach (Transform child in scrollArea.content)
-        {
-            if (child != null)
+            if 
+            (
+                player.GetComponent<PlayerHealthbar>().player.CanUpgrade(upgrade.Key) &&
+                player.GetComponent<PlayerPointsScript>().GetPoints() >= scrollArea.content.GetChild(globalIndex).GetComponent<PerkStationViewholder>().GetPrice()
+            )
             {
-                Destroy(child.gameObject);
+                player.GetComponent<PlayerPointsScript>().DeductPoints(scrollArea.content.GetChild(globalIndex).GetComponent<PerkStationViewholder>().GetPrice());
+                player.GetComponent<PlayerHealthbar>().player.LevelUpModule(upgrade.Key);
+                scrollArea.content.GetChild(globalIndex).GetComponent<PerkStationViewholder>().SetInfo(upgrade, player.GetComponent<PlayerHealthbar>().player);
             }
         }
     }
@@ -159,7 +155,7 @@ public class PerkStationScript : MonoBehaviour
                 collision
                     .gameObject
                     .GetComponent<InteractScript>()
-                    .SetTM("[ F ] to interact with upgrade station");
+                    .SetTM("[ F ] to interact with perk station");
             }
         }
     }

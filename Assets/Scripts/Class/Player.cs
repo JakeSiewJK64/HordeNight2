@@ -7,6 +7,8 @@ public class Player : Character
     public float healthRegeneration { get; set; }
     public float playerSpeed { get; set; }
 
+    public float maxHealth { get; set; }
+
     public Dictionary<string, int> upgradeModule { get; set; }
 
     public Player(float health, float stamina, float damage, float healthRegeneration) : base(health, damage)
@@ -14,32 +16,55 @@ public class Player : Character
         this.stamina = stamina;
         this.healthRegeneration = healthRegeneration;
         playerSpeed = 5f;
+        maxHealth = health;
+        
         upgradeModule = new Dictionary<string, int>()
         {
-            { "MOVEMENT_SPEED", 0 },
-            { "HEALTH", 0 },
-            { "HEALTH_REGEN_SPEED", 0 },
+            { "MovementSpeed", 0 },
+            { "MaximumHealth", 0 },
+            { "HealthRegenDelay", 0 },
+            { "HealthRegenSpeed", 0 },
         };
+    }
+
+    public bool CanUpgrade(string tag)
+    {
+        return upgradeModule.ContainsKey(tag) && upgradeModule[tag] < 5f;
     }
 
     public void LevelUpModule(string tag)
     {
+        if(tag == "MaximumHealth")
+        {
+            UpgradeMaxHealth();
+        }
+
         upgradeModule[tag]++;
     } 
 
-    public float GetHealth()
+    public void UpgradeMaxHealth()
     {
-        return health + health * (upgradeModule["HEALTH"] * .25f);
+        maxHealth = GetMaxHealth();
+    }
+
+    public float GetMaxHealth()
+    {
+        return maxHealth + maxHealth * (upgradeModule["MaximumHealth"] * .05f);
     }
 
     public float GetSpeed()
     {
-        return playerSpeed + playerSpeed * (upgradeModule["MOVEMENT_SPEED"] * .25f);
+        return playerSpeed + playerSpeed * (upgradeModule["MovementSpeed"] * .1f);
+    }
+
+    public float GetHealthRegenDelay()
+    {
+        return healthRegeneration - healthRegeneration * (upgradeModule["HealthRegenDelay"] * .15f);
     }
 
     public float GetHealthRegenSpeed()
     {
-        return healthRegeneration + healthRegeneration * (upgradeModule["HEALTH_REGEN_SPEED"] * .25f);
+        return healthRegeneration + healthRegeneration * (upgradeModule["HealthRegenSpeed"] * .25f);
     }
 
     public void TakeDamage(float damage)

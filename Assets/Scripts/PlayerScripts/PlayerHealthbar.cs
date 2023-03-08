@@ -1,3 +1,5 @@
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,9 +10,12 @@ public class PlayerHealthbar : MonoBehaviour
 
     [SerializeField]
     private Image healthbar;
+
+    [SerializeField]
+    private TextMeshProUGUI healthIndicator;
+
     private float healthbarLength = .8f;
     private float healthbarHeight = .0625f;
-    private float healthRegenBuffer = 5f;
 
     void Start()
     {
@@ -26,27 +31,22 @@ public class PlayerHealthbar : MonoBehaviour
     {
         player.TakeDamage(damage);
         lastDamageTime = Time.time;
-    }
 
+        if (player.health <= 0)
+        {
+            ProcessDeath();
+        }
+    }
 
     private void Update()
     {
-        if (player.health < 100)
+        if (Time.time - lastDamageTime > player.GetHealthRegenDelay() && player.health < player.GetMaxHealth())
         {
-            // player dies
-            if (player.health <= 0)
-            {
-                ProcessDeath();
-            }
-
-            if (Time.time - lastDamageTime > healthRegenBuffer)
-            {
-                // regenerate health
-                GetComponent<PlayerHealthbar>().player.GainHealth(Time.deltaTime * player.healthRegeneration);
-            }
+            // regenerate health
+            GetComponent<PlayerHealthbar>().player.GainHealth(Time.deltaTime * player.GetHealthRegenSpeed());
         }
-
-        healthbar.GetComponent<RectTransform>().sizeDelta = new Vector2((player.health / 100) * healthbarLength, healthbarHeight);
+        healthIndicator.text = Math.Round(player.health, 0) + " / " + Math.Round(player.GetMaxHealth(), 0);
+        healthbar.GetComponent<RectTransform>().sizeDelta = new Vector2(player.health / player.GetMaxHealth() * healthbarLength, healthbarHeight);
     }
 
     private void ProcessDeath()

@@ -78,7 +78,7 @@ public class Weapon : Item
 
     public float GetFireRate()
     {
-        return fireRate - fireRate * (upgradeModuleHash["ROF"] * .0625f);
+        return fireRate - fireRate * (upgradeModuleHash["ROF"] * .03125f);
     }
 
     public float GetDamage()
