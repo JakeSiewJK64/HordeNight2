@@ -18,12 +18,11 @@ public class ZombiesKillCounter : MonoBehaviour
         round++;
         rewardPoints = (round - 1) * 100;
         GetComponent<PlayerPointsScript>().IncrementPoints(rewardPoints);
-        maxZombies += GetComponent<ZombiesKillCounter>().round * 2;
+        maxZombies += GetComponent<ZombiesKillCounter>().round * 3;
     }
 
     private void Start()
     {
-        round = 299;
         bloodmoon = 7;
         ChangeRound();
     }
