@@ -23,7 +23,17 @@ public class PlayerMovementScript : MonoBehaviour
 
     private void AnimatePlayer()
     {
-        animator.SetBool("PistolWalking", WASDCheck());
+        if(GetComponent<BulletSpawnScript>().GetCurrentWeapon() != null && GetComponent<BulletSpawnScript>().GetCurrentWeapon().weaponType != WeaponType.Sidearm)
+        {
+            animator.SetBool("PistolWalking", false);
+            animator.SetBool("RifleWalking", WASDCheck());
+            animator.SetBool("RifleIdle", !WASDCheck());
+        } else
+        {
+            animator.SetBool("PistolWalking", WASDCheck());
+            animator.SetBool("PistolIdle", !WASDCheck());
+            animator.SetBool("RifleWalking", false);
+        }
         animator.SetBool("Running", isRunning);
     }
 

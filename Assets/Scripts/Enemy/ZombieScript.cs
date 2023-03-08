@@ -3,19 +3,75 @@ using UnityEngine;
 
 public class ZombieScript : MonoBehaviour
 {
+    [SerializeField]
+    private Transform RagdollRoot;
+
     public Zombie zombie;
 
     private string soundPath = "Raw\\Sound\\Zombie\\";
     private Animator zombieController;
+
+    // ragdoll variables
+    private Rigidbody[] rigidbodies;
+    private CharacterJoint[] joints;
+    private Collider[] colliders;
 
     // player info
     private ZombiesKillCounter counter;
     private PlayerPointsScript playerPoints;
     private ZombieHealthIndicator indicator;
 
+    public bool dead = false;
+    public float deadTime = 0;
+
     private void Start()
     {
         zombieController = GetComponentInChildren<Animator>();
+        rigidbodies = RagdollRoot.GetComponentsInChildren<Rigidbody>();
+        joints = RagdollRoot.GetComponentsInChildren<CharacterJoint>();
+        colliders = RagdollRoot.GetComponentsInChildren<Collider>();
+
+        EnableAnimator();
+    }
+
+    private void EnableAnimator()
+    {
+        zombieController.enabled = true;
+        foreach(CharacterJoint joint in joints)
+        {
+            joint.enableCollision = false;
+        }
+
+        foreach(Collider collider in colliders)
+        {
+            collider.enabled = false;
+        }
+
+        foreach(Rigidbody rigidbody in rigidbodies)
+        {
+            rigidbody.detectCollisions = false;
+            rigidbody.useGravity = false;
+        }
+    }
+
+    private void EnableRagdoll()
+    {
+        zombieController.enabled = false;
+        foreach (CharacterJoint joint in joints)
+        {
+            joint.enableCollision = true;
+        }
+
+        foreach (Collider collider in colliders)
+        {
+            collider.enabled = true;
+        }
+
+        foreach (Rigidbody rigidbody in rigidbodies)
+        {
+            rigidbody.detectCollisions = true;
+            rigidbody.useGravity = true;
+        }
     }
 
     private void Update()
@@ -27,7 +83,7 @@ public class ZombieScript : MonoBehaviour
     {
         try
         {
-            if (collision.gameObject.tag == "Player" && collision != null && gameObject != null)
+            if (collision.gameObject.tag == "Player" && collision != null && gameObject != null && !dead)
             {
                 zombieController.SetBool("Attacking", true);
                 collision.gameObject.GetComponent<PlayerHealthbar>().TakeDamage(zombie.damage);
@@ -50,12 +106,20 @@ public class ZombieScript : MonoBehaviour
 
     void CheckHealth()
     {
-        if (zombie.health <= 0)
+        if(dead && Time.time - deadTime > 10f)
+        {
+            Destroy(transform.parent.gameObject);
+        }
+
+        if (zombie.health <= 0 && !dead)
         {
             counter.IncrementCounter();
             playerPoints.IncrementPoints(100f);
             indicator.HideUI();
-            Destroy(transform.parent.gameObject);
+            EnableRagdoll();
+            dead = true;
+            deadTime = Time.time;
+            gameObject.tag = "Untagged";
         }
     }
 

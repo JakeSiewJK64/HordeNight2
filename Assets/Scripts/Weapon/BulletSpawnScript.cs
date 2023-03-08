@@ -165,4 +165,9 @@ public class BulletSpawnScript : MonoBehaviour
             }
         }
     }
+
+    public Weapon GetCurrentWeapon()
+    {
+        return currentWeapon;
+    }
 }

@@ -19,15 +19,18 @@ public class ZombieMovement : MonoBehaviour
     {
         try
         {
-            float distanceFromTarget = Vector3.Distance(transform.position, player.transform.position);
-            if (distanceFromTarget <= followRadius)
+            if(!GetComponentInChildren<ZombieScript>().dead)
             {
-                Vector3 targetPosition = player.transform.position;
-                transform.position = Vector3.MoveTowards(
-                    transform.position,
-                    targetPosition,
-                    GetComponentInChildren<ZombieScript>().zombie.speed * Time.deltaTime);
-                transform.LookAt(new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z));
+                float distanceFromTarget = Vector3.Distance(transform.position, player.transform.position);
+                if (distanceFromTarget <= followRadius && distanceFromTarget > .8f)
+                {
+                    Vector3 targetPosition = player.transform.position;
+                    transform.position = Vector3.MoveTowards(
+                        transform.position,
+                        targetPosition,
+                        GetComponentInChildren<ZombieScript>().zombie.speed * Time.deltaTime);
+                    transform.LookAt(new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z));
+                }
             }
         }
         catch { }
