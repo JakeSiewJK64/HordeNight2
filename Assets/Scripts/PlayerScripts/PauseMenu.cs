@@ -5,6 +5,7 @@ public class PauseMenu : MonoBehaviour
 {
     [SerializeField]
     private GameObject pauseMenu;
+    private bool paused = false;
 
     private void Start()
     {
@@ -13,15 +14,16 @@ public class PauseMenu : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.Escape) && !GetComponent<PlayerBuyStationInteraction>().GetInteracting())
         {
             if(GetComponent<PlayerHealthbar>().player.health > 0)
             {
-                if(pauseMenu.active)
+                if(paused)
                 {
                     OnUnPauseButtonPressed();
                     return;
                 }
+                paused = true;
                 pauseMenu.SetActive(true);
                 Time.timeScale = 0;
                 Cursor.visible = true;
@@ -33,6 +35,7 @@ public class PauseMenu : MonoBehaviour
 
     public void OnUnPauseButtonPressed()
     {
+        paused = false;
         Time.timeScale = 1;
         pauseMenu.SetActive(false);
         Cursor.visible = false;

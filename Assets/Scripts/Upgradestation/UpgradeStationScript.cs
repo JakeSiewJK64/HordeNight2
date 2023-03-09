@@ -135,10 +135,10 @@ public class UpgradeStationScript : MonoBehaviour
 
             if(selectedUpgradeItem)
             {
-                ControlScrollArea(upgradeDescScrollArea, upgradeSelectedItemIndex);
+                ControlScrollArea(upgradeDescScrollArea);
             } else
             {
-                ControlScrollArea(scrollArea, selectedItemIndex);
+                ControlScrollArea(scrollArea);
             }
 
             if (Input.GetKey(KeyCode.Escape))
@@ -151,23 +151,30 @@ public class UpgradeStationScript : MonoBehaviour
         }
     }
 
-    private void ControlScrollArea(ScrollRect scrollArea, int selectedItemIndex)
+    private void ControlScrollArea(ScrollRect scrollArea)
     {
+        int startingIndex = selectedUpgradeItem ? upgradeSelectedItemIndex : selectedItemIndex;
+
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            selectedItemIndex = Mathf.Min(selectedItemIndex + 1, scrollArea.content.childCount - 1);
-            SetSelected(selectedItemIndex, scrollArea);
+            startingIndex = Mathf.Min(startingIndex + 1, scrollArea.content.childCount - 1);
+            SetSelected(startingIndex, scrollArea);
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            selectedItemIndex = Mathf.Max(selectedItemIndex - 1, 0);
-            SetSelected(selectedItemIndex, scrollArea);
+            startingIndex = Mathf.Max(startingIndex - 1, 0);
+            SetSelected(startingIndex, scrollArea);
         }
 
-        // scroll based on index
-        int index = selectedItemIndex;
-        upgradeSelectedItemIndex = index;
-        float normalizedPosition = (float)index / (scrollArea.content.childCount - 1);
+        if(selectedUpgradeItem)
+        {
+            upgradeSelectedItemIndex = startingIndex;
+        } else
+        {
+            selectedItemIndex = startingIndex;
+        }
+
+        float normalizedPosition = (float)startingIndex / (scrollArea.content.childCount - 1);
         scrollArea.normalizedPosition = new Vector2(0, 1 - normalizedPosition);
     }
 
