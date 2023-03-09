@@ -66,7 +66,7 @@ public class BulletSpawnScript : MonoBehaviour
 
     private void checkReloading()
     {
-        if (Input.GetKeyDown(KeyCode.R) && !reloading && currentWeapon.currentBullets != currentWeapon.GetMagazineSize())
+        if (currentWeapon != null && Input.GetKeyDown(KeyCode.R) && !reloading && currentWeapon.currentBullets != currentWeapon.GetMagazineSize())
         {
             Reload();
         }

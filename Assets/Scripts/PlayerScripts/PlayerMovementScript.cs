@@ -23,17 +23,33 @@ public class PlayerMovementScript : MonoBehaviour
 
     private void AnimatePlayer()
     {
-        if(GetComponent<BulletSpawnScript>().GetCurrentWeapon() != null && GetComponent<BulletSpawnScript>().GetCurrentWeapon().weaponType != WeaponType.Sidearm)
+        if (GetComponent<BulletSpawnScript>().GetCurrentWeapon() != null)
         {
-            animator.SetBool("PistolWalking", false);
-            animator.SetBool("RifleWalking", WASDCheck());
-            animator.SetBool("RifleIdle", !WASDCheck());
+            animator.SetBool("Idle", false);
+            if (GetComponent<BulletSpawnScript>().GetCurrentWeapon().weaponType == WeaponType.Sidearm)
+            {
+                animator.SetBool("RifleWalking", false);
+                animator.SetBool("RifleIdle", false);
+
+                animator.SetBool("PistolIdle", !WASDCheck());
+                animator.SetBool("PistolWalking", WASDCheck());
+            } else
+            {
+                animator.SetBool("PistolWalking", false);
+                animator.SetBool("PistolIdle", false);
+
+                animator.SetBool("RifleIdle", !WASDCheck());
+                animator.SetBool("RifleWalking", WASDCheck());
+            }
         } else
         {
-            animator.SetBool("PistolWalking", WASDCheck());
-            animator.SetBool("PistolIdle", !WASDCheck());
+            animator.SetBool("PistolIdle", false);
+            animator.SetBool("PistolWalking", false);
             animator.SetBool("RifleWalking", false);
+            animator.SetBool("RifleIdle", false);
+            animator.SetBool("Idle", !WASDCheck());
         }
+
         animator.SetBool("Running", isRunning);
     }
 
@@ -96,7 +112,7 @@ public class PlayerMovementScript : MonoBehaviour
             if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
             {
                 // transition to running animation
-                animator.Play("Idle", 0, 0.0f);
+                animator.Play("Running", 0, 0.0f);
                 rolling = false;
             }
         }

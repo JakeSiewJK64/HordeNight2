@@ -54,16 +54,19 @@ public class PlayerInventoryScript : MonoBehaviour
             }
         }
 
-        switch (currentWeapon.weaponHolding)
+        if(currentWeapon != null)
         {
-            case WeaponHolding.PRIMARY:
-                SwapWeapon(0);
-                break;
-            case WeaponHolding.SECONDARY:
-                SwapWeapon(1);
-                break;
-            default:
-                break;
+            switch (currentWeapon.weaponHolding)
+            {
+                case WeaponHolding.PRIMARY:
+                    SwapWeapon(0);
+                    break;
+                case WeaponHolding.SECONDARY:
+                    SwapWeapon(1);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
