@@ -1,3 +1,4 @@
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,6 +10,9 @@ public class PlayerDeath : MonoBehaviour
     [SerializeField]
     private GameObject deathScreen;
 
+    [SerializeField]
+    private CinemachineVirtualCamera[] cameras;
+
     private void Start()
     {
         deathScreen.gameObject.SetActive(false);
@@ -16,10 +20,6 @@ public class PlayerDeath : MonoBehaviour
 
     public void PromptDeathScreen()
     {
-        // manage buy station UI
-        //GetComponent<BuyStationScript>().CloseBuyStation();
-
-        //GetComponent<PlayerHealthScript>().player.dead = true;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
 
@@ -30,6 +30,11 @@ public class PlayerDeath : MonoBehaviour
 
         deathScreen.gameObject.SetActive(true);
         Time.timeScale = 0;
+
+        foreach(var item in cameras)
+        {
+            item.enabled = false;
+        }
     }
 
     public void OnQuitButtonPressed()
