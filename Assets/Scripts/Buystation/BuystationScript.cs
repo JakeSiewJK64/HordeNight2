@@ -155,16 +155,24 @@ public class BuystationScript : MonoBehaviour
             selectedItem.magazineSize = selectedItem.magazineSize;
             selectedItem.reserveAmmo = selectedItem.startingAmmo;
 
-            if (selectedItem.weaponHolding == WeaponHolding.PRIMARY)
+            if (!player.GetComponent<PlayerInventoryScript>().ContainsWeapon(selectedItem.name))
             {
-                player.GetComponent<PlayerInventoryScript>().GetPlayerInventory().SetPrimaryWeapon(selectedItem);
-            } else
-            {
-                player.GetComponent<PlayerInventoryScript>().GetPlayerInventory().SetSecondaryWeapon(selectedItem);
+                switch (player.GetComponent<PlayerInventoryScript>().GetWeaponIndex())
+                {
+                    case 0:
+                        player.GetComponent<PlayerInventoryScript>().GetPlayerInventory().SetPrimaryWeapon(selectedItem);
+                        break;
+                    case 1:
+                        player.GetComponent<PlayerInventoryScript>().GetPlayerInventory().SetSecondaryWeapon(selectedItem);
+                        break;
+                    default:
+                        player.GetComponent<PlayerInventoryScript>().GetPlayerInventory().SetTertiaryWeapon(selectedItem);
+                        break;
+                }
+                player.GetComponent<AudioSource>().PlayOneShot(Resources.Load<AudioClip>("Sound\\purchase"));
+                player.GetComponent<PlayerInventoryScript>().UpdateWeapons();
+                player.GetComponent<PlayerPointsScript>().DeductPoints(selectedItem.price);
             }
-            player.GetComponent<AudioSource>().PlayOneShot(Resources.Load<AudioClip>("Sound\\purchase"));
-            player.GetComponent<PlayerInventoryScript>().UpdateWeapons();
-            player.GetComponent<PlayerPointsScript>().DeductPoints(selectedItem.price);
         }
     }
 

@@ -23,7 +23,6 @@ public class ZombiesKillCounter : MonoBehaviour
 
     private void Start()
     {
-        round = 499;
         bloodmoon = 7;
         ChangeRound();
     }

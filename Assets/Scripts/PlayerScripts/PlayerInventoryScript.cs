@@ -15,6 +15,8 @@ public class PlayerInventoryScript : MonoBehaviour
 
     private List<Weapon> playerWeapons;
 
+    private int weaponIndex = 0;
+
     private void Awake()
     {
         InitializeInventory();
@@ -22,8 +24,23 @@ public class PlayerInventoryScript : MonoBehaviour
         UpdateWeapons();
     }
 
+    public int GetWeaponIndex()
+    {
+        return weaponIndex;
+    }
+
+    public bool ContainsWeapon(string weaponName)
+    {
+        foreach(var weapon in playerWeapons) 
+        {
+            if(weapon != null && weapon.name == weaponName) return true;
+        }
+        return false;
+    }
+
     public void SwapWeapon(int index)
     {
+        weaponIndex = index;
         currentWeapon = playerWeapons[index];
         GetComponent<BulletSpawnScript>().ChangeWeapon(currentWeapon);
     }
@@ -51,21 +68,6 @@ public class PlayerInventoryScript : MonoBehaviour
             } else
             {
                 weaponHotbar[i].GetComponent<Image>().gameObject.SetActive(false);
-            }
-        }
-
-        if(currentWeapon != null)
-        {
-            switch (currentWeapon.weaponHolding)
-            {
-                case WeaponHolding.PRIMARY:
-                    SwapWeapon(0);
-                    break;
-                case WeaponHolding.SECONDARY:
-                    SwapWeapon(1);
-                    break;
-                default:
-                    break;
             }
         }
     }
