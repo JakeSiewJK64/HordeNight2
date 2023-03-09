@@ -10,9 +10,6 @@ public class PlayerDeath : MonoBehaviour
     [SerializeField]
     private GameObject deathScreen;
 
-    [SerializeField]
-    private CinemachineVirtualCamera[] cameras;
-
     private void Start()
     {
         deathScreen.gameObject.SetActive(false);
@@ -31,10 +28,7 @@ public class PlayerDeath : MonoBehaviour
         deathScreen.gameObject.SetActive(true);
         Time.timeScale = 0;
 
-        foreach(var item in cameras)
-        {
-            item.enabled = false;
-        }
+        GetComponent<PlayerCameraManager>().StopCamera();
     }
 
     public void OnQuitButtonPressed()

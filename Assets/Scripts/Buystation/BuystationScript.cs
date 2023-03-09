@@ -157,7 +157,16 @@ public class BuystationScript : MonoBehaviour
 
             if (!player.GetComponent<PlayerInventoryScript>().ContainsWeapon(selectedItem.name))
             {
-                switch (player.GetComponent<PlayerInventoryScript>().GetWeaponIndex())
+                int index = 3;
+                foreach(var item in player.GetComponent<PlayerInventoryScript>().GetAllWeapons())
+                {
+                    if(item == null)
+                    {
+                        index = player.GetComponent<PlayerInventoryScript>().GetAllWeapons().IndexOf(item);
+                    }
+                }
+
+                switch (index < 3 ? index : player.GetComponent<PlayerInventoryScript>().GetWeaponIndex())
                 {
                     case 0:
                         player.GetComponent<PlayerInventoryScript>().GetPlayerInventory().SetPrimaryWeapon(selectedItem);
